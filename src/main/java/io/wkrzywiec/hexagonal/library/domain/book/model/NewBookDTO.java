@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class BookDTO {
+public class NewBookDTO {
 
     String title;
 }
