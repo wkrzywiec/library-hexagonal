@@ -20,7 +20,7 @@ public class BookFacadeTest {
                 .title("Harry Potter and the Philosopher's Stone")
                 .build();
 
-        facade.createNewBook(book);
+        facade.createBook(book);
 
         BookDTO actualBook = repository.findById(1L);
         assertEquals(book, actualBook);
