@@ -1,14 +1,15 @@
 package io.wkrzywiec.hexagonal.library;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class LibraryHexagonalApplicationTests {
 
 	@Test
-	@Disabled("Not ready yet")
+    @DisplayName("Test if Spring context is built")
 	void contextLoads() {
 	}
 
