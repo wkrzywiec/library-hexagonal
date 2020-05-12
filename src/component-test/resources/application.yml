@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: library
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver

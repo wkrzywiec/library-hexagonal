@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/google/books")
 @RequiredArgsConstructor
-public class GoogleBooksController {
+public class GoogleBooksSearchController {
 
-    private final GoogleBooksClient client;
+    private final GoogleBookSearchClient client;
 
-    @GetMapping("")
-    public ResponseEntity<String> searchForBooks(@RequestParam String query){
+    @GetMapping(value = "", produces = "application/json")
+    ResponseEntity<String> searchForBooks(@RequestParam String query){
         return new ResponseEntity<>(client.searchForBooks(query), HttpStatus.OK);
-    }
-
-    @GetMapping("/{bookId}")
-    public ResponseEntity<String> getBookBId(@PathVariable String bookId){
-        return new ResponseEntity<>(client.getBookById(bookId), HttpStatus.OK);
     }
 }

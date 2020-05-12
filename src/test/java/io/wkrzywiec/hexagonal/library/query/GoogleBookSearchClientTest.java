@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class GoogleBooksClientTest {
+public class GoogleBookSearchClientTest {
 
     @Autowired
-    private GoogleBooksClient client;
+    private GoogleBookSearchClient client;
 
     @Test
     @DisplayName("Search for a book")
@@ -32,13 +32,4 @@ public class GoogleBooksClientTest {
         JsonObject response = JsonParser.parseString(responseString).getAsJsonObject();
         assertEquals(0, response.get("totalItems").getAsLong());
     }
-
-    @Test
-    @DisplayName("Get book details by id")
-    public void givenCorrectBookId_whenGetBookById_thenGetBookDetails(){
-        String responseString = client.getBookById("wrOQLV6xB-wC");
-        JsonObject response = JsonParser.parseString(responseString).getAsJsonObject();
-        assertEquals("Harry Potter and the Sorcerer's Stone", response.getAsJsonObject("volumeInfo").getAsJsonPrimitive("title").getAsString());
-    }
-
 }
