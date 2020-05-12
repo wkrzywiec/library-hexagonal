@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.infrastructure.adapter.GoogleBooksAdapter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

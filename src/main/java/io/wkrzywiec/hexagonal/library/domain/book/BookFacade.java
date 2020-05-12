@@ -2,18 +2,18 @@ package io.wkrzywiec.hexagonal.library.domain.book;
 
 import io.wkrzywiec.hexagonal.library.domain.book.model.NewBookDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookRepository;
+import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
 
 public class BookFacade implements AddNewBook {
 
-    private BookRepository repository;
+    private BookDatabase database;
 
-    public BookFacade(BookRepository repository) {
-        this.repository = repository;
+    public BookFacade(BookDatabase database) {
+        this.database = database;
     }
 
     @Override
     public void handle(NewBookDTO newBookDTO){
-        repository.save(newBookDTO);
+        database.save(newBookDTO);
     }
 }

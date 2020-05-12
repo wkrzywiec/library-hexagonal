@@ -1,12 +1,12 @@
 package io.wkrzywiec.hexagonal.library.domain;
 
 import io.wkrzywiec.hexagonal.library.domain.book.model.NewBookDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookRepository;
+import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class InMemoryBookRepository implements BookRepository {
+public class InMemoryBookDatabase implements BookDatabase {
 
     ConcurrentHashMap<Long, NewBookDTO> books = new ConcurrentHashMap<>();
 

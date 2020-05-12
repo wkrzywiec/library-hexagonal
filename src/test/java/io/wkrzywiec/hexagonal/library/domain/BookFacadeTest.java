@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookFacadeTest {
 
-    private InMemoryBookRepository repository = new InMemoryBookRepository();
+    private InMemoryBookDatabase repository = new InMemoryBookDatabase();
     private BookFacade facade = new BookFacade(repository);
 
     @Test

@@ -21,5 +21,4 @@ public class BookCommandController {
         addNewBook.handle(newBookDTO);
         return new ResponseEntity<>("New book was added to library", HttpStatus.CREATED);
     }
-
 }

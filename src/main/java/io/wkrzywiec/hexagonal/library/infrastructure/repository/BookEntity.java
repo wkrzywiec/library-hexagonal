@@ -1,4 +1,4 @@
-package io.wkrzywiec.hexagonal.library.infrastructure;
+package io.wkrzywiec.hexagonal.library.infrastructure.repository;
 
 import lombok.Builder;
 

@@ -1,4 +1,4 @@
-package io.wkrzywiec.hexagonal.library.infrastructure;
+package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
 import io.restassured.path.json.JsonPath;
 import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
