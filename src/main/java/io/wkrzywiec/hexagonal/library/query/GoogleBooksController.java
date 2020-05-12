@@ -16,7 +16,7 @@ public class GoogleBooksController {
     private final GoogleBooksClient client;
 
     @GetMapping("")
-    public ResponseEntity<Object> searchForBooks(@RequestParam String query){
+    public ResponseEntity<String> searchForBooks(@RequestParam String query){
         return new ResponseEntity<>(client.searchForBooks(query), HttpStatus.OK);
     }
 }
