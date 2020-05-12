@@ -17,7 +17,7 @@ public class GoogleBooksClientTest {
     private GoogleBooksClient client;
 
     @Test
-    @DisplayName("Search for a book in Google Books API")
+    @DisplayName("Search for a book")
     public void whenSearchForBooks_thenGetListOfBooks(){
 
         String responseString = client.searchForBooks("harry potter");
@@ -26,10 +26,19 @@ public class GoogleBooksClientTest {
     }
 
     @Test
-    @DisplayName("Search for a book in Google Book API and get empty result")
+    @DisplayName("Search for a book and get empty result")
     public void whenSearchForBooks_thenGetEmptyResult(){
         String responseString = client.searchForBooks("djfjbasdknl");
         JsonObject response = JsonParser.parseString(responseString).getAsJsonObject();
         assertEquals(0, response.get("totalItems").getAsLong());
     }
+
+    @Test
+    @DisplayName("Get book details by id")
+    public void givenCorrectBookId_whenGetBookById_thenGetBookDetails(){
+        String responseString = client.getBookById("wrOQLV6xB-wC");
+        JsonObject response = JsonParser.parseString(responseString).getAsJsonObject();
+        assertEquals("Harry Potter and the Sorcerer's Stone", response.getAsJsonObject("volumeInfo").getAsJsonPrimitive("title").getAsString());
+    }
+
 }
