@@ -1,19 +1,24 @@
 package io.wkrzywiec.hexagonal.library.domain.book;
 
-import io.wkrzywiec.hexagonal.library.domain.book.model.NewBookDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.model.ExternalBookIdDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
+import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
 
 public class BookFacade implements AddNewBook {
 
     private BookDatabase database;
+    private GetBookDetails getBookDetails;
 
-    public BookFacade(BookDatabase database) {
+    public BookFacade(BookDatabase database, GetBookDetails getBookDetails) {
         this.database = database;
+        this.getBookDetails = getBookDetails;
     }
 
     @Override
-    public void handle(NewBookDTO newBookDTO){
-        database.save(newBookDTO);
+    public void handle(ExternalBookIdDTO externalBookIdDTO){
+        BookDetailsDTO bookDetails = getBookDetails.handle(externalBookIdDTO.getValue());
+        database.save(bookDetails);
     }
 }

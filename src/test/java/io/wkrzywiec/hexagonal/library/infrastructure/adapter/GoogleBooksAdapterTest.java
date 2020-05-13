@@ -1,17 +1,43 @@
-package io.wkrzywiec.hexagonal.library.infrastructure;
+package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
+import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.infrastructure.adapter.GoogleBooksAdapter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
+@ExtendWith(MockitoExtension.class)
 public class GoogleBooksAdapterTest {
 
-    GoogleBooksAdapter adapter = new GoogleBooksAdapter();
+    @Mock
+    private RestTemplate restTemplate;
+
+    private GoogleBooksAdapter adapter;
+
+    @BeforeEach
+    public void init() {
+        Mockito.when(restTemplate.exchange(
+                        eq("https://www.googleapis.com/books/v1/volumes/" + TestData.homoDeusBookDetailsDTO().getBookExternalId()),
+                        eq(HttpMethod.GET),
+                        any(),
+                        eq(String.class)))
+                .thenReturn(new ResponseEntity<>(TestData.homoDeusGooleBooksResponse(), HttpStatus.OK));
+        adapter  = new GoogleBooksAdapter(restTemplate);
+    }
 
     @Test
     @DisplayName("Get book details from Google Books")
