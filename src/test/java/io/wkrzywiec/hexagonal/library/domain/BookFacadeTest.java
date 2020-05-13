@@ -8,17 +8,11 @@ import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 public class BookFacadeTest {
 
-    @Mock
     private GetBookDetails getBookDetails;
     private InMemoryBookDatabase database;
     private BookFacade facade;
@@ -26,6 +20,7 @@ public class BookFacadeTest {
     @BeforeEach
     public void init() {
         database = new InMemoryBookDatabase();
+        getBookDetails = new GetBookDetailsMock();
         facade = new BookFacade(database, getBookDetails);
     }
 
@@ -38,10 +33,6 @@ public class BookFacadeTest {
                 .builder()
                 .value(expectedBook.getBookExternalId())
                 .build();
-
-        when(
-                getBookDetails.handle(expectedBook.getBookExternalId()))
-                .thenReturn(expectedBook);
 
         //when
         facade.handle(externalBookId);
