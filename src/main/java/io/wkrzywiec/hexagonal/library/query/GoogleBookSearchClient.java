@@ -22,9 +22,12 @@ public class GoogleBookSearchClient {
         requestHeader.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestHeader);
 
+        String searchQuery =
+                "https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books&q=" + query.trim();
+
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(
-                        "https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books&q=" + query,
+                        searchQuery,
                         HttpMethod.GET,
                         requestEntity,
                         String.class);
