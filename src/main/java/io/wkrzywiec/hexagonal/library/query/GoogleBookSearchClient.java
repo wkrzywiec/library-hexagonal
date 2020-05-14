@@ -1,21 +1,34 @@
 package io.wkrzywiec.hexagonal.library.query;
 
-import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
-import static io.restassured.RestAssured.given;
 
 @RequiredArgsConstructor
 @Component
 public class GoogleBookSearchClient {
 
+    private final RestTemplate restTemplate;
+
     public String searchForBooks(String query){
-        Response response =
-                given()
-                        .param("q", query)
-                        .when()
-                .get("https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books");
-        return response.getBody().asString();
+
+        HttpHeaders requestHeader = new HttpHeaders();
+        requestHeader.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestHeader);
+
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(
+                        "https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books&q=" + query,
+                        HttpMethod.GET,
+                        requestEntity,
+                        String.class);
+
+        return responseEntity.getBody();
     }
 }
