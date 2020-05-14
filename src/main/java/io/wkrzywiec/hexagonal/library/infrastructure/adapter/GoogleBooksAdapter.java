@@ -30,7 +30,7 @@ public class GoogleBooksAdapter implements GetBookDetails {
     public BookDetailsDTO handle(String googleBookId) {
 
         HttpHeaders requestHeader = new HttpHeaders();
-        requestHeader.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+//        requestHeader.add("Accept", MediaType.ALL_VALUE);
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestHeader);
 
         ResponseEntity<String> responseEntity =

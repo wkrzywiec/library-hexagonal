@@ -7,7 +7,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packages = "io.wkrzywiec.hexagonal.library.domain")
-public class NoSpringInDomainPackageTest {
+public class HexagonalArchitectureTest {
 
     @ArchTest
     public static final ArchRule noSpringDependenciesInDomainPackage =

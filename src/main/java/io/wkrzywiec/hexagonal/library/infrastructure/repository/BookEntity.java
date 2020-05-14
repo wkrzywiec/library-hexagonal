@@ -1,6 +1,10 @@
 package io.wkrzywiec.hexagonal.library.infrastructure.repository;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +17,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 import java.util.Set;
 
 
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @Table(name="book")
 public class BookEntity {
 
@@ -51,12 +60,12 @@ public class BookEntity {
     @Column(name="publishedDate")
     private String publishedDate;
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition="TEXT")
     private String description;
 
     @Column(name="pages")
     private int pages;
 
-    @Column(name="imageLink")
+    @Column(name="imageLink", columnDefinition="TEXT")
     private String imageLink;
 }
