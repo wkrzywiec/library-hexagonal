@@ -232,4 +232,12 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Library REST application (hexagonal)</name>
+			<url>https://maven.pkg.github.com/wkrzywiec/library-hexagonal</url>
+		</repository>
+	</distributionManagement>
 </project>
