@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.domain.book;
 
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.model.ExternalBookIdDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;

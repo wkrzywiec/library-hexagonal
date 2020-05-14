@@ -1,7 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain;
 
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.model.ExternalBookIdDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
 
 import java.util.concurrent.ConcurrentHashMap;

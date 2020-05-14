@@ -3,13 +3,12 @@ package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 

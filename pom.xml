@@ -19,7 +19,10 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<surefire.and.failsafe.report.dir>target/test-report</surefire.and.failsafe.report.dir>
-		<code.coverage.exclusions></code.coverage.exclusions>
+		<code.coverage.exclusions>
+			**/io/wkrzywiec/hexagonal/library/domain/book/dto/**,
+			**/io/wkrzywiec/hexagonal/library/infrastructure/repository/*Entity.java
+		</code.coverage.exclusions>
 	</properties>
 
 	<dependencies>
