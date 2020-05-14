@@ -141,6 +141,24 @@
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
 						</configuration>
 					</execution>
+					<execution>
+						<id>merge-all-jacoco</id>
+						<goals>
+							<goal>merge</goal>
+						</goals>
+						<phase>verify</phase>
+						<configuration>
+							<destFile>target/coverage-reports/jacoco-merged.exec</destFile>
+							<fileSets>
+								<fileSet>
+									<directory>target/coverage-reports/</directory>
+									<includes>
+										<include>*.exec</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
@@ -213,8 +231,7 @@
 				<sonar.exclusions>${code.coverage.exclusions}</sonar.exclusions>
 				<sonar.projectKey>wkrzywiec_library-hexagonal</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
-				<sonar.jacoco.itReportPath>target/coverage-reports/jacoco-it.exec</sonar.jacoco.itReportPath>
-				<sonar.jacoco.reportPaths>target/coverage-reports/jacoco.exec</sonar.jacoco.reportPaths>
+				<sonar.jacoco.reportPaths>target/coverage-reports/jacoco-merged.exec</sonar.jacoco.reportPaths>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 			</properties>
 			<activation>
