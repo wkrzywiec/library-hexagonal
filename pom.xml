@@ -135,9 +135,9 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
-						</configuration>
+<!--						<configuration>-->
+<!--							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>-->
+<!--						</configuration>-->
 					</execution>
 					<execution>
 						<id>unit-test-report</id>
@@ -146,7 +146,7 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>-->
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
 						</configuration>
 					</execution>
@@ -156,9 +156,9 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
-						</configuration>
+<!--						<configuration>-->
+<!--							<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>-->
+<!--						</configuration>-->
 					</execution>
 					<execution>
 						<id>integration-test-report</id>
@@ -167,26 +167,8 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-							<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>-->
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>merge-all-jacoco</id>
-						<goals>
-							<goal>merge</goal>
-						</goals>
-						<phase>verify</phase>
-						<configuration>
-							<destFile>target/coverage-reports/jacoco-merged.exec</destFile>
-							<fileSets>
-								<fileSet>
-									<directory>target/coverage-reports/</directory>
-									<includes>
-										<include>*.exec</include>
-									</includes>
-								</fileSet>
-							</fileSets>
 						</configuration>
 					</execution>
 				</executions>
@@ -261,7 +243,7 @@
 				<sonar.exclusions>${code.coverage.exclusions}</sonar.exclusions>
 				<sonar.projectKey>wkrzywiec_library-hexagonal</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
-				<sonar.coverage.jacoco.xmlReportPaths>${surefire.and.failsafe.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+				<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 			</properties>
 			<activation>
