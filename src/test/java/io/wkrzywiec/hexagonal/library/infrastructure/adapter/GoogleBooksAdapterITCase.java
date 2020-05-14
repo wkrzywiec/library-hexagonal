@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

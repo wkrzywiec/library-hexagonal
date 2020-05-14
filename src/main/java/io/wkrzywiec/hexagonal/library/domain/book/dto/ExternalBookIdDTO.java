@@ -1,4 +1,4 @@
-package io.wkrzywiec.hexagonal.library.domain.book.model;
+package io.wkrzywiec.hexagonal.library.domain.book.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

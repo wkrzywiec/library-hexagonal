@@ -2,8 +2,8 @@ package io.wkrzywiec.hexagonal.library.domain;
 
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.book.BookFacade;
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.model.ExternalBookIdDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

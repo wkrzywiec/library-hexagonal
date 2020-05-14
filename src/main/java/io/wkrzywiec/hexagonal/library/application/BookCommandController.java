@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.application;
 
-import io.wkrzywiec.hexagonal.library.domain.book.model.ExternalBookIdDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
 import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

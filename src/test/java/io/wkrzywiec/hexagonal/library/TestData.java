@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library;
 
-import io.wkrzywiec.hexagonal.library.domain.book.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
 
 import java.util.Collections;
 
