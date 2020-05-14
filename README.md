@@ -5,7 +5,27 @@
 
 This is a small application that provides basic REST endpoints for managing library (add new book, reserve, borrow it, etc.). 
 
+The technology behind it: 
+* Java 11
+* Postgres
+* Spring Boot 
+
 ## Installing / Getting started
 
-Description in future
+#### Using `docker-compose`
+
+In the terminal run the following command:
+```console
+$ docker-compose up
+``` 
+
+#### Using Maven
+
+First make sure that you adjust the configuration file - `src/main/resources/application.yml` with connection details to your database.  
+
+Then, in the terminal run the following command:
+```console
+$ mvn clean package
+$ mvn spring-boot:run
+```
 
