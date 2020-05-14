@@ -84,10 +84,6 @@
 			<version>0.13.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -95,13 +91,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>clover-maven-plugin</artifactId>
-				<configuration>
-					<reportDescriptor>clover-report.xml</reportDescriptor>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -135,9 +124,6 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-<!--						<configuration>-->
-<!--							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>-->
-<!--						</configuration>-->
 					</execution>
 					<execution>
 						<id>unit-test-report</id>
@@ -146,7 +132,6 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>-->
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
 						</configuration>
 					</execution>
@@ -156,9 +141,6 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-<!--						<configuration>-->
-<!--							<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>-->
-<!--						</configuration>-->
 					</execution>
 					<execution>
 						<id>integration-test-report</id>
@@ -167,7 +149,6 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>-->
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
 						</configuration>
 					</execution>
@@ -210,24 +191,6 @@
 											<directory>src/component-test/resources</directory>
 										</resource>
 									</resources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>3.0.0-M3</version>
-						<executions>
-							<execution>
-								<id>failsafe-component-test</id>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-								<configuration>
-									<skipTests>false</skipTests>
 								</configuration>
 							</execution>
 						</executions>
