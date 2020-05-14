@@ -18,6 +18,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
+		<surefire.and.failsafe.report.dir>target/test-report</surefire.and.failsafe.report.dir>
 		<code.coverage.exclusions></code.coverage.exclusions>
 	</properties>
 
@@ -96,71 +97,100 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>clover-maven-plugin</artifactId>
+				<configuration>
+					<reportDescriptor>clover-report.xml</reportDescriptor>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>pre-unit-test</id>
 						<goals>
-							<goal>prepare-agent</goal>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
 						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
-						</configuration>
-					</execution>
-					<execution>
-						<id>unit-test-report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
-							<outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>pre-integration-test</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
-						</configuration>
-					</execution>
-					<execution>
-						<id>integration-test-report</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>merge-all-jacoco</id>
-						<goals>
-							<goal>merge</goal>
-						</goals>
-						<phase>verify</phase>
-						<configuration>
-							<destFile>target/coverage-reports/jacoco-merged.exec</destFile>
-							<fileSets>
-								<fileSet>
-									<directory>target/coverage-reports/</directory>
-									<includes>
-										<include>*.exec</include>
-									</includes>
-								</fileSet>
-							</fileSets>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<reportsDirectory>${surefire.and.failsafe.report.dir}</reportsDirectory>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<reportsDirectory>${surefire.and.failsafe.report.dir}</reportsDirectory>
+				</configuration>
+			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.jacoco</groupId>-->
+<!--				<artifactId>jacoco-maven-plugin</artifactId>-->
+<!--				<version>0.8.5</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>pre-unit-test</id>-->
+<!--						<goals>-->
+<!--							<goal>prepare-agent</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>unit-test-report</id>-->
+<!--						<phase>test</phase>-->
+<!--						<goals>-->
+<!--							<goal>report</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>-->
+<!--							<outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>pre-integration-test</id>-->
+<!--						<phase>pre-integration-test</phase>-->
+<!--						<goals>-->
+<!--							<goal>prepare-agent</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>integration-test-report</id>-->
+<!--						<phase>post-integration-test</phase>-->
+<!--						<goals>-->
+<!--							<goal>report</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>-->
+<!--							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>merge-all-jacoco</id>-->
+<!--						<goals>-->
+<!--							<goal>merge</goal>-->
+<!--						</goals>-->
+<!--						<phase>verify</phase>-->
+<!--						<configuration>-->
+<!--							<destFile>target/coverage-reports/jacoco-merged.exec</destFile>-->
+<!--							<fileSets>-->
+<!--								<fileSet>-->
+<!--									<directory>target/coverage-reports/</directory>-->
+<!--									<includes>-->
+<!--										<include>*.exec</include>-->
+<!--									</includes>-->
+<!--								</fileSet>-->
+<!--							</fileSets>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
@@ -231,7 +261,7 @@
 				<sonar.exclusions>${code.coverage.exclusions}</sonar.exclusions>
 				<sonar.projectKey>wkrzywiec_library-hexagonal</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
-				<sonar.jacoco.reportPaths>target/coverage-reports/jacoco-merged.exec</sonar.jacoco.reportPaths>
+				<sonar.coverage.jacoco.xmlReportPaths>${surefire.and.failsafe.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 			</properties>
 			<activation>
