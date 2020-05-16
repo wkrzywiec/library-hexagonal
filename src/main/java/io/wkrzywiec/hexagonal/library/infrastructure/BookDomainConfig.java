@@ -1,10 +1,10 @@
 package io.wkrzywiec.hexagonal.library.infrastructure;
 
-import io.wkrzywiec.hexagonal.library.domain.book.BookFacade;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
-import io.wkrzywiec.hexagonal.library.infrastructure.adapter.BookDatabaseAdapter;
+import io.wkrzywiec.hexagonal.library.domain.inventory.InventoryFacade;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.incoming.AddNewBook;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.GetBookDetails;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.InventoryDatabase;
+import io.wkrzywiec.hexagonal.library.infrastructure.adapter.InventoryDatabaseAdapter;
 import io.wkrzywiec.hexagonal.library.infrastructure.adapter.GoogleBooksAdapter;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.PostgresBookRepository;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,8 @@ public class BookDomainConfig {
     }
 
     @Bean
-    BookDatabase bookRepository(PostgresBookRepository repository){
-        return new BookDatabaseAdapter(repository);
+    InventoryDatabase bookRepository(PostgresBookRepository repository){
+        return new InventoryDatabaseAdapter(repository);
     }
 
     @Bean
@@ -30,7 +30,7 @@ public class BookDomainConfig {
     }
 
     @Bean
-    AddNewBook addNewBook(BookDatabase database, GetBookDetails getBookDetails){
-        return new BookFacade(database, getBookDetails);
+    AddNewBook addNewBook(InventoryDatabase database, GetBookDetails getBookDetails){
+        return new InventoryFacade(database, getBookDetails);
     }
 }

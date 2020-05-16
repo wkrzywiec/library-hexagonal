@@ -1,8 +1,8 @@
-package io.wkrzywiec.hexagonal.library.domain;
+package io.wkrzywiec.hexagonal.library.domain.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.GetBookDetails;
 
 import java.util.HashMap;
 import java.util.Map;

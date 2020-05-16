@@ -3,8 +3,8 @@ package io.wkrzywiec.hexagonal.library.application;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.BookEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,20 +59,19 @@ public class AddNewBookTest {
     public void givenGoogleBooId_whenAddNewBook_thenBookIsSaved(){
         //given
         BookDetailsDTO homoDeusBookDetails = TestData.homoDeusBookDetailsDTO();
-        ExternalBookIdDTO googleBookId =
-                ExternalBookIdDTO.builder()
-                        .value(homoDeusBookDetails.getBookExternalId())
+        AddNewBookCommand addNewBookCommand =
+                AddNewBookCommand.builder()
+                        .googleBookId(homoDeusBookDetails.getBookExternalId())
                         .build();
 
         //when
-        ValidatableResponse response =
-                given()
-                        .contentType("application/json")
-                        .body(googleBookId)
-                .when()
-                    .post( baseURL + "/books")
-                    .prettyPeek()
-                .then();
+        given()
+                .contentType("application/json")
+                .body(addNewBookCommand)
+        .when()
+                .post( baseURL + "/books")
+                .prettyPeek()
+        .then();
 
         //then
         String homoDeusSql = "select * from book where book_external_id = '" + homoDeusBookDetails.getBookExternalId() + "'";

@@ -1,4 +1,4 @@
-package io.wkrzywiec.hexagonal.library.domain.book.dto;
+package io.wkrzywiec.hexagonal.library.domain.inventory.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExternalBookIdDTO {
-
-    private String value;
+public class AddNewBookCommand {
+    private String googleBookId;
 }

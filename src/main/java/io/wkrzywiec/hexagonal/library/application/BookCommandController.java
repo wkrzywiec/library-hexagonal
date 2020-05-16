@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.application;
 
-import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.AddNewBook;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.incoming.AddNewBook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class BookCommandController {
     private final AddNewBook addNewBook;
 
     @PostMapping("")
-    public ResponseEntity<String> addNewBook(@RequestBody ExternalBookIdDTO externalBookIdDTO){
-        addNewBook.handle(externalBookIdDTO);
+    public ResponseEntity<String> addNewBook(@RequestBody AddNewBookCommand addNewBookCommand){
+        addNewBook.handle(addNewBookCommand);
         return new ResponseEntity<>("New book was added to library", HttpStatus.CREATED);
     }
 }

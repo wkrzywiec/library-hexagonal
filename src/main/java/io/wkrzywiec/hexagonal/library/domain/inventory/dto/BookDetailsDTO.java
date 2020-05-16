@@ -1,4 +1,4 @@
-package io.wkrzywiec.hexagonal.library.domain.book.dto;
+package io.wkrzywiec.hexagonal.library.domain.inventory.dto;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

@@ -1,27 +1,26 @@
-package io.wkrzywiec.hexagonal.library.domain;
+package io.wkrzywiec.hexagonal.library.domain.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.domain.book.BookFacade;
-import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.dto.ExternalBookIdDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.incoming.GetBookDetails;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.GetBookDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BookFacadeTest {
+public class InventoryFacadeTest {
 
     private GetBookDetails getBookDetails;
-    private InMemoryBookDatabase database;
-    private BookFacade facade;
+    private InMemoryInventoryDatabase database;
+    private InventoryFacade facade;
 
     @BeforeEach
     public void init() {
-        database = new InMemoryBookDatabase();
+        database = new InMemoryInventoryDatabase();
         getBookDetails = new GetBookDetailsMock();
-        facade = new BookFacade(database, getBookDetails);
+        facade = new InventoryFacade(database, getBookDetails);
     }
 
     @Test
@@ -29,9 +28,9 @@ public class BookFacadeTest {
     public void correctlySaveBook(){
         //given
         BookDetailsDTO expectedBook = TestData.homoDeusBookDetailsDTO();
-        ExternalBookIdDTO externalBookId = ExternalBookIdDTO
+        AddNewBookCommand externalBookId = AddNewBookCommand
                 .builder()
-                .value(expectedBook.getBookExternalId())
+                .googleBookId(expectedBook.getBookExternalId())
                 .build();
 
         //when

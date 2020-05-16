@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
-import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.domain.book.ports.outgoing.BookDatabase;
+import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.InventoryDatabase;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.AuthorEntiy;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.BookEntity;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.PostgresBookRepository;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class BookDatabaseAdapter implements BookDatabase {
+public class InventoryDatabaseAdapter implements InventoryDatabase {
 
     private final PostgresBookRepository repository;
 
