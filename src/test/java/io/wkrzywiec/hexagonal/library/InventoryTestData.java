@@ -4,7 +4,7 @@ import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 
 import java.util.Collections;
 
-public class TestData {
+public class InventoryTestData {
 
     public static BookDetailsDTO homoDeusBookDetailsDTO() {
         return BookDetailsDTO
