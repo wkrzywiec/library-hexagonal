@@ -1,23 +1,23 @@
-CREATE TABLE book (
-    id SERIAL PRIMARY KEY,
-    book_external_id varchar(100) NOT NULL UNIQUE,
-    isbn_10 varchar(10) DEFAULT NULL,
-    isbn_13 varchar(13) DEFAULT NULL,
-    title varchar(200) NOT NULL,
-    publisher varchar(200) DEFAULT NULL,
-    published_date varchar(100) DEFAULT NULL,
-    description text DEFAULT NULL,
-    page_count int(6) DEFAULT NULL,
-    image_link varchar(1000) DEFAULT NULL
+CREATE TABLE IF NOT EXISTS public.book (
+    id                  BIGSERIAL PRIMARY KEY,
+    book_external_id    CHARACTER VARYING(255) NOT NULL UNIQUE,
+    isbn_10             CHARACTER VARYING(10) DEFAULT NULL,
+    isbn_13             CHARACTER VARYING(13) DEFAULT NULL,
+    title               CHARACTER VARYING(255) NOT NULL,
+    publisher           CHARACTER VARYING(255) DEFAULT NULL,
+    published_date      CHARACTER VARYING(255) DEFAULT NULL,
+    description         TEXT DEFAULT NULL,
+    page_count          INTEGER DEFAULT NULL,
+    image_link          CHARACTER VARYING(1000) DEFAULT NULL
 );
 
-CREATE TABLE author (
-    id SERIAL PRIMARY KEY,
-    name varchar(200) NOT NULL UNIQUE
+CREATE TABLE IF NOT EXISTS public.author (
+    id          BIGSERIAL PRIMARY KEY,
+    name        CHARACTER VARYING(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE book_author (
-    id SERIAL PRIMARY KEY,
-    book_id INTEGER REFERENCES book(id),
-    author_id INTEGER REFERENCES author(id)
+CREATE TABLE IF NOT EXISTS public.book_author (
+    id          BIGSERIAL PRIMARY KEY,
+    book_id     BIGINT NOT NULL REFERENCES public.book,
+    author_id   BIGINT NOT NULL REFERENCES public.author
 );
