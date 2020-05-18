@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostgresBookRepository extends CrudRepository<BookEntity, Long> {
+public interface BookRepository extends CrudRepository<BookEntity, Long> {
 }

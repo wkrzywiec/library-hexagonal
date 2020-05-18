@@ -4,7 +4,7 @@ import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.InventoryDatabase;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.AuthorEntiy;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.BookEntity;
-import io.wkrzywiec.hexagonal.library.infrastructure.repository.PostgresBookRepository;
+import io.wkrzywiec.hexagonal.library.infrastructure.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InventoryDatabaseAdapter implements InventoryDatabase {
 
-    private final PostgresBookRepository repository;
+    private final BookRepository repository;
 
     @Override
     public void save(BookDetailsDTO bookDetailsDTO) {

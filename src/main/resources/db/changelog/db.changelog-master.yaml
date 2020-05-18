@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Wojtek
+      comment: Create tables for books and authors
+      changes:
+        - sqlFile:
+            path: 01_books_and_users.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

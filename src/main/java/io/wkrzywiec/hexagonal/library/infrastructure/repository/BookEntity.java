@@ -63,7 +63,7 @@ public class BookEntity {
     @Column(name="description", columnDefinition="TEXT")
     private String description;
 
-    @Column(name="pages")
+    @Column(name="page_count")
     private int pages;
 
     @Column(name="imageLink", columnDefinition="TEXT")

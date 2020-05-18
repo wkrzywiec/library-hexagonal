@@ -76,7 +76,7 @@ public class AddNewBookTest {
         //then
         String homoDeusSql = "select * from book where book_external_id = '" + homoDeusBookDetails.getBookExternalId() + "'";
         BookEntity savedBook = (BookEntity) jdbc.queryForObject(homoDeusSql, new BeanPropertyRowMapper(BookEntity.class));
-        assertEquals(homoDeusBookDetails.getTitle(), savedBook.getTitle());
+        assertEquals(homoDeusBookDetails.getBookExternalId(), savedBook.getBookExternalId());
         assertEquals(homoDeusBookDetails.getTitle(), savedBook.getTitle());
     }
 }
