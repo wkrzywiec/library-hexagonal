@@ -4,6 +4,7 @@ import io.wkrzywiec.hexagonal.library.ReservationTestData;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.BookReservationCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.AvailableBookNotFoundExeption;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.TooManyBooksAssignedToUserException;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class BorrowingFacadeTest {
@@ -30,6 +32,23 @@ public class BorrowingFacadeTest {
     public void init(){
         database = new InMemoryBorrowingDatabase();
         facade = new BorrowingFacade(database, emailSender);
+    }
+
+    @Test
+    @DisplayName("Make book available")
+    public void whenMakeBookAvailableCommandReceived_thenBookIsOnAvailableStatus() {
+        //given
+        MakeBookAvailableCommand makeBookAvailableCommand =
+                MakeBookAvailableCommand.builder()
+                        .bookId(100L)
+                        .build();
+
+        //when
+        facade.handle(makeBookAvailableCommand);
+
+        //then
+        assertTrue(database.availableBooks.containsKey(100L));
+        assertTrue(database.availableBooks.containsValue(new AvailableBook(100L)));
     }
 
     @Test

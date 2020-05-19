@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS public.user (
+    id          BIGSERIAL PRIMARY KEY,
+    first_name  CHARACTER VARYING(255) NOT NULL,
+    last_name   CHARACTER VARYING(255) NOT NULL,
+    email       CHARACTER VARYING(255) NOT NULL UNIQUE
+);
