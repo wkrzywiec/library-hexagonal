@@ -3,7 +3,6 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationDetails;
-import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.AvailableBookNotFoundExeption;
@@ -12,16 +11,13 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.incoming.MakeBookAvailable;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.incoming.ReserveBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.outgoing.BorrowingDatabase;
-import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.outgoing.EmailSender;
 
 public class BorrowingFacade implements MakeBookAvailable, ReserveBook {
 
     private BorrowingDatabase database;
-    private EmailSender emailSender;
 
-    public BorrowingFacade(BorrowingDatabase database, EmailSender emailSender) {
+    public BorrowingFacade(BorrowingDatabase database) {
         this.database = database;
-        this.emailSender = emailSender;
     }
 
     @Override
@@ -30,7 +26,7 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook {
     }
 
     @Override
-    public void handle(BookReservationCommand bookReservation) {
+    public Long handle(BookReservationCommand bookReservation) {
         AvailableBook availableBook =
                 database.getAvailableBook(bookReservation.getBookId())
                 .orElseThrow(() -> new AvailableBookNotFoundExeption(bookReservation.getBookId()));
@@ -41,7 +37,6 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook {
 
         ReservedBook reservedBook = activeUser.reserve(availableBook);
         ReservationDetails reservationDetails = database.save(reservedBook);
-
-        emailSender.sendReservationConfirmationEmail(reservationDetails);
+        return reservationDetails.getReservationId().getIdAsLong();
     }
 }

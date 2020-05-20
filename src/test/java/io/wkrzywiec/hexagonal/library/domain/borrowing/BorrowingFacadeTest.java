@@ -8,30 +8,23 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.model.MakeBookAvailableCo
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.AvailableBookNotFoundExeption;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.TooManyBooksAssignedToUserException;
-import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.outgoing.EmailSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
 public class BorrowingFacadeTest {
 
     private BorrowingFacade facade;
     private InMemoryBorrowingDatabase database;
-    @Mock
-    private EmailSender emailSender;
 
     @BeforeEach
     public void init(){
         database = new InMemoryBorrowingDatabase();
-        facade = new BorrowingFacade(database, emailSender);
+        facade = new BorrowingFacade(database);
     }
 
     @Test
