@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase;
 
 import java.util.concurrent.ConcurrentHashMap;

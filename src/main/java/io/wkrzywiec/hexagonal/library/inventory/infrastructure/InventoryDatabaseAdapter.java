@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase;
 import io.wkrzywiec.hexagonal.library.inventory.infrastructure.repository.AuthorEntiy;
 import io.wkrzywiec.hexagonal.library.inventory.infrastructure.repository.BookEntity;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class InventoryDatabaseAdapter implements InventoryDatabase {
+class InventoryDatabaseAdapter implements InventoryDatabase {
 
     private final BookRepository repository;
 

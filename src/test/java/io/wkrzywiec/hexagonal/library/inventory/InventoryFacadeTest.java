@@ -1,8 +1,8 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

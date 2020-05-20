@@ -3,7 +3,7 @@ package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
 import static java.util.Optional.ofNullable;
 
 @RequiredArgsConstructor
-public class GoogleBooksAdapter implements GetBookDetails {
+class GoogleBooksAdapter implements GetBookDetails {
 
     private final RestTemplate restTemplate;
 
@@ -29,7 +29,6 @@ public class GoogleBooksAdapter implements GetBookDetails {
     public BookDetailsDTO handle(String googleBookId) {
 
         HttpHeaders requestHeader = new HttpHeaders();
-//        requestHeader.add("Accept", MediaType.ALL_VALUE);
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestHeader);
 
         ResponseEntity<String> responseEntity =

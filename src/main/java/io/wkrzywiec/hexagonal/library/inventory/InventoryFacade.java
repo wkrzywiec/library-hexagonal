@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
-import io.wkrzywiec.hexagonal.library.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase;

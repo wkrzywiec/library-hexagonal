@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.inventory.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 
 import java.util.HashMap;

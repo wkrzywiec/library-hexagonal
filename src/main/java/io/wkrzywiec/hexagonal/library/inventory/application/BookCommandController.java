@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory.application;
 
-import io.wkrzywiec.hexagonal.library.inventory.dto.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
