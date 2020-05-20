@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
-import io.wkrzywiec.hexagonal.library.InventoryTestData;
+import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,8 +31,8 @@ public class GoogleBooksAdapterITCase {
     @DisplayName("Get book details from Google Books")
     public void givenCorrectBookId_whenGetBookDetails_thenReturnBookDetailsDTO(){
         //given
-        String homoDeusResponse = InventoryTestData.homoDeusGooleBooksResponse();
-        BookDetailsDTO homoDeusBookDetails = InventoryTestData.homoDeusBookDetailsDTO();
+        String homoDeusResponse = TestData.homoDeusGooleBooksResponse();
+        BookDetailsDTO homoDeusBookDetails = TestData.homoDeusBookDetailsDTO();
         server.expect(requestTo(
                 "https://www.googleapis.com/books/v1/volumes/" + homoDeusBookDetails.getBookExternalId()))
                 .andRespond(withSuccess(homoDeusResponse, MediaType.APPLICATION_JSON));

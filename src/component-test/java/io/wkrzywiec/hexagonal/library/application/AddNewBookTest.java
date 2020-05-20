@@ -2,7 +2,7 @@ package io.wkrzywiec.hexagonal.library.application;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import io.wkrzywiec.hexagonal.library.InventoryTestData;
+import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.infrastructure.repository.BookEntity;
@@ -58,7 +58,7 @@ public class AddNewBookTest {
     @DisplayName("Add new book to a database")
     public void givenGoogleBooId_whenAddNewBook_thenBookIsSaved(){
         //given
-        BookDetailsDTO homoDeusBookDetails = InventoryTestData.homoDeusBookDetailsDTO();
+        BookDetailsDTO homoDeusBookDetails = TestData.homoDeusBookDetailsDTO();
         AddNewBookCommand addNewBookCommand =
                 AddNewBookCommand.builder()
                         .googleBookId(homoDeusBookDetails.getBookExternalId())

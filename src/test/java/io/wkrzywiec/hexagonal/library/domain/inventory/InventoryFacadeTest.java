@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain.inventory;
 
-import io.wkrzywiec.hexagonal.library.InventoryTestData;
+import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.GetBookDetails;
@@ -27,7 +27,7 @@ public class InventoryFacadeTest {
     @DisplayName("Correctly save a new book in a repository")
     public void correctlySaveBook(){
         //given
-        BookDetailsDTO expectedBook = InventoryTestData.homoDeusBookDetailsDTO();
+        BookDetailsDTO expectedBook = TestData.homoDeusBookDetailsDTO();
         AddNewBookCommand externalBookId = AddNewBookCommand
                 .builder()
                 .googleBookId(expectedBook.getBookExternalId())

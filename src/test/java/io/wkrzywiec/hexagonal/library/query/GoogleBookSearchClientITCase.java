@@ -2,7 +2,7 @@ package io.wkrzywiec.hexagonal.library.query;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.wkrzywiec.hexagonal.library.InventoryTestData;
+import io.wkrzywiec.hexagonal.library.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class GoogleBookSearchClientITCase {
     @DisplayName("Search for a book")
     public void whenSearchForBooks_thenGetListOfBooks(){
         //given
-        String harryPotterSearchResponse = InventoryTestData.harryPotterSearchResponse();
+        String harryPotterSearchResponse = TestData.harryPotterSearchResponse();
         server.expect(requestTo(
                 "https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books&q=" + "harry%20potter"))
                 .andRespond(withSuccess(harryPotterSearchResponse, MediaType.APPLICATION_JSON));
@@ -46,7 +46,7 @@ public class GoogleBookSearchClientITCase {
     @DisplayName("Search for a book and get empty result")
     public void whenSearchForBooks_thenGetEmptyResult(){
         //given
-        String noBooksResponse = InventoryTestData.noBooksSearchResponse();
+        String noBooksResponse = TestData.noBooksSearchResponse();
         server.expect(requestTo(
                 "https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=40&printType=books&q=" + "djfjbasdknl"))
                 .andRespond(withSuccess(noBooksResponse, MediaType.APPLICATION_JSON));

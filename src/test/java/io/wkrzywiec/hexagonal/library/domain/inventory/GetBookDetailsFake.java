@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain.inventory;
 
-import io.wkrzywiec.hexagonal.library.InventoryTestData;
+import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.domain.inventory.ports.outgoing.GetBookDetails;
 
@@ -14,8 +14,8 @@ public class GetBookDetailsFake implements GetBookDetails {
     public GetBookDetailsFake() {
         bookDetails = new HashMap<String, BookDetailsDTO>();
         bookDetails.put(
-                InventoryTestData.homoDeusBookDetailsDTO().getBookExternalId(),
-                InventoryTestData.homoDeusBookDetailsDTO());
+                TestData.homoDeusBookDetailsDTO().getBookExternalId(),
+                TestData.homoDeusBookDetailsDTO());
     }
 
     @Override

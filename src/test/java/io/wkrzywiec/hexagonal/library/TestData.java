@@ -1,10 +1,11 @@
 package io.wkrzywiec.hexagonal.library;
 
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.inventory.dto.BookDetailsDTO;
 
 import java.util.Collections;
 
-public class InventoryTestData {
+public class TestData {
 
     public static BookDetailsDTO homoDeusBookDetailsDTO() {
         return BookDetailsDTO
