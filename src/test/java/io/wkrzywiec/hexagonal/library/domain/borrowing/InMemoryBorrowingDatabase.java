@@ -1,8 +1,9 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
-import io.vavr.Tuple;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationDetails;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.outgoing.BorrowingDatabase;
 
@@ -40,8 +41,10 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     }
 
     @Override
-    public void save(ReservedBook reservedBook) {
+    public ReservationDetails save(ReservedBook reservedBook) {
+        Long reservationId = new Random().nextLong();
         availableBooks.remove(reservedBook.getIdAsLong());
-        reservedBooks.put(new Random().nextLong(),  reservedBook);
+        reservedBooks.put(reservationId,  reservedBook);
+        return new ReservationDetails(new ReservationId(reservationId), reservedBook);
     }
 }

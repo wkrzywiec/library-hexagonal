@@ -2,6 +2,8 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.MakeBookAvailableCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationDetails;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.AvailableBookNotFoundExeption;
@@ -38,8 +40,8 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook {
                 .orElseThrow(() -> new ActiveUserNotFoundException(bookReservation.getUserId()));
 
         ReservedBook reservedBook = activeUser.reserve(availableBook);
-        database.save(reservedBook);
+        ReservationDetails reservationDetails = database.save(reservedBook);
 
-        emailSender.sendReservationConfirmationEmail(activeUser, reservedBook);
+        emailSender.sendReservationConfirmationEmail(reservationDetails);
     }
 }

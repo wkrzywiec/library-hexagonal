@@ -2,11 +2,12 @@ package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationDetails;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.ports.outgoing.BorrowingDatabase;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                             ReservedBook.class,
                             userId
                     );
-                return Optional.ofNullable(
+                return Optional.of(
                         new ActiveUser(userId, reservedBooksByUser)
                 );
             } else {
@@ -65,10 +66,16 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     @Override
-    public void save(ReservedBook reservedBook) {
+    public ReservationDetails save(ReservedBook reservedBook) {
        jdbcTemplate.update(
                "INSERT INTO reserved (book_id, user_id) VALUES (?, ?)",
                reservedBook.getIdAsLong(),
                reservedBook.getAssignedUserIdAsLong());
+
+       ReservationId reservationId = jdbcTemplate.queryForObject(
+               "SELECT id FROM reserved WHERE book_id = ?",
+               ReservationId.class,
+               reservedBook.getIdAsLong());
+       return new ReservationDetails(reservationId, reservedBook);
     }
 }

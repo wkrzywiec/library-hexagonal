@@ -3,6 +3,8 @@ package io.wkrzywiec.hexagonal.library.infrastructure.adapter;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationDetails;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -116,15 +118,12 @@ public class BorrowingDatabaseAdapterITCase {
         ReservedBook reservedBook = new ReservedBook(bookId, activeUserId);
 
         //when
-        database.save(reservedBook);
+        ReservationDetails reservationDetails = database.save(reservedBook);
 
         //then
-        Map<String, Object> reservationDetails =
-                jdbcTemplate.queryForMap(
-                        "SELECT book_id, user_id FROM reserved WHERE book_id = ?", bookId);
 
-
-        assertEquals(bookId, reservationDetails.get("book_id"));
-        assertEquals(activeUserId, reservationDetails.get("user_id"));
+        assertEquals(bookId, reservationDetails.getReservedBook().getIdAsLong());
+        assertEquals(activeUserId, reservationDetails.getReservedBook().getAssignedUserIdAsLong());
+        assertTrue(reservationDetails.getReservationId().getIdAsLong() > 0);
     }
 }
