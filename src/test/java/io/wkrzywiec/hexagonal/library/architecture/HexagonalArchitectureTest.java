@@ -10,9 +10,13 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 public class HexagonalArchitectureTest {
 
     @ArchTest
-    public static final ArchRule noSpringDependenciesInDomainPackage =
+    public static final ArchRule noSpringDependenciesInBorrowingCoreDomain =
             noClasses().that()
-                    .resideInAPackage("..io.wkrzywiec.hexagonal.library.domain..")
+                    .resideInAnyPackage(
+                            "..io.wkrzywiec.hexagonal.library.borrowing.ports..",
+                            "..io.wkrzywiec.hexagonal.library.borrowing.model..")
+                    .and()
+                    .haveNameMatching(".*Facade")
             .should()
             .dependOnClassesThat().resideInAPackage("org.springframework..");
 }
