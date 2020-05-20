@@ -2,8 +2,8 @@ spring:
   application:
     name: library
   datasource:
-    url: jdbc:postgresql://${POSTGRES_SERVER}:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://localhost:5432/library
     driverClassName: org.postgresql.Driver
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    username: library
+    password: library
     jpa.database-platform: org.hibernate.dialect.PostgreSQL9Dialect

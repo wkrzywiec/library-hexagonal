@@ -1,24 +1,37 @@
 package io.wkrzywiec.hexagonal.library;
 
-import io.wkrzywiec.hexagonal.library.domain.book.dto.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.Author;
+import io.wkrzywiec.hexagonal.library.inventory.model.Book;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookIdentification;
+import io.wkrzywiec.hexagonal.library.inventory.model.Isbn10;
+import io.wkrzywiec.hexagonal.library.inventory.model.Isbn13;
 
 import java.util.Collections;
 
 public class TestData {
 
-    public static BookDetailsDTO homoDeusBookDetailsDTO() {
-        return BookDetailsDTO
-                .builder()
-                .bookExternalId("dWYyCwAAQBAJ")
-                .isbn10("1473545374")
-                .isbn13("9781473545373")
-                .title("Homo Deus")
-                .authors(Collections.singletonList("Yuval Noah Harari"))
-                .publisher("Random House")
-                .publishedDate("2016-09-08")
-                .description("<p><b>**THE MILLION COPY BESTSELLER**</b><br> <b></b><br><b> <i>Sapiens </i>showed us where we came from. In uncertain times, <i>Homo Deus</i> shows us where we’re going.</b></p><p> Yuval Noah Harari envisions a near future in which we face a new set of challenges. <i>Homo Deus</i> explores the projects, dreams and nightmares that will shape the twenty-first century and beyond – from overcoming death to creating artificial life.</p><p> It asks the fundamental questions: how can we protect this fragile world from our own destructive power? And what does our future hold?<br> <b></b><br><b> '<i>Homo Deus</i> will shock you. It will entertain you. It will make you think in ways you had not thought before’ Daniel Kahneman, bestselling author of <i>Thinking, Fast and Slow</i></b></p>")
-                .pages(528)
-                .build();
+    public static String homoDeusBookGoogleId() {
+        return "dWYyCwAAQBAJ";
+    }
+
+    public static String homoDeusBookTitle() {
+        return "Homo Deus";
+    }
+
+    public static Book homoDeusBook() {
+        Isbn10 isbn10 = new Isbn10("1473545374");
+        Isbn13 isbn13 = new Isbn13("9781473545373");
+
+        return new Book(
+                new BookIdentification(homoDeusBookGoogleId(), isbn10, isbn13),
+                homoDeusBookTitle(),
+                Collections.singleton(new Author("Yuval Noah Harari")),
+                "Random House",
+                "2016-09-08",
+                "<p><b>**THE MILLION COPY BESTSELLER**</b><br> <b></b><br><b> <i>Sapiens </i>showed us where we came from. In uncertain times, <i>Homo Deus</i> shows us where we’re going.</b></p><p> Yuval Noah Harari envisions a near future in which we face a new set of challenges. <i>Homo Deus</i> explores the projects, dreams and nightmares that will shape the twenty-first century and beyond – from overcoming death to creating artificial life.</p><p> It asks the fundamental questions: how can we protect this fragile world from our own destructive power? And what does our future hold?<br> <b></b><br><b> '<i>Homo Deus</i> will shock you. It will entertain you. It will make you think in ways you had not thought before’ Daniel Kahneman, bestselling author of <i>Thinking, Fast and Slow</i></b></p>",
+                528,
+                        "http://books.google.com/books/content?id=dWYyCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE73PkLs4TNB-W2uhDvXJkIB4-9G9AJ_L1iYTYLEXa3zi2kahdsN9-_0tL7WRWgujNpjMA5ZuJO7_ykFUlCWAyLzcQVcGkqUS-NOkUkEcJ_ZRrgq48URpcfBrJWQCwSWtHo5pEGkp&source=gbs_api"
+        );
     }
 
     public static String homoDeusGooleBooksResponse(){

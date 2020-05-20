@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Wojtek
+      comment: Create tables for books and authors
+      changes:
+        - sqlFile:
+            path: 01_books_and_authors.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: Wojtek
+      comment: Create table for users
+      changes:
+        - sqlFile:
+            path: 02_users.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: Wojtek
+      comment: Create tables for books statuses (available, reserved, borrowed)
+      changes:
+        - sqlFile:
+            path: 03_books_statuses.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

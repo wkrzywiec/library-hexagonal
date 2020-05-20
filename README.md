@@ -29,3 +29,9 @@ $ mvn clean package
 $ mvn spring-boot:run
 ```
 
+#### Inside IntelliJ (with H2 or Postgres database)
+
+First configure how you run the `LibraryHexagonalApplication.java` by adding `--spring.profiles.active=h2` (for H2 database) or `--spring.profiles.active=postgres` (for Postgres database) as a **Program argument**.
+
+Then just run the `LibraryHexagonalApplication.java` class so it will use H2 database (you don't need to have postgres database up and running).
+
