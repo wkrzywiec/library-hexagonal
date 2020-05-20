@@ -1,7 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
 import io.vavr.Tuple;
-import io.vavr.Tuple2;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
@@ -15,7 +14,7 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
 
     ConcurrentHashMap<Long, ActiveUser> activeUsers = new ConcurrentHashMap<>();
     ConcurrentHashMap<Long, AvailableBook> availableBooks = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Long, Tuple2<ActiveUser, ReservedBook>> reservedBooks = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Long, ReservedBook> reservedBooks = new ConcurrentHashMap<>();
 
     @Override
     public void setBookAvailable(Long bookId) {
@@ -41,8 +40,8 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     }
 
     @Override
-    public void saveReservationFor(ActiveUser activeUser, ReservedBook reservedBook) {
-        availableBooks.remove(reservedBook.getId());
-        reservedBooks.put(new Random().nextLong(), Tuple.of(activeUser, reservedBook));
+    public void save(ReservedBook reservedBook) {
+        availableBooks.remove(reservedBook.getIdAsLong());
+        reservedBooks.put(new Random().nextLong(),  reservedBook);
     }
 }

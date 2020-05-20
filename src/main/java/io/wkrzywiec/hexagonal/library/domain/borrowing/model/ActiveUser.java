@@ -1,28 +1,38 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing.model;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.exception.TooManyBooksAssignedToUserException;
-import lombok.Getter;
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
-@Value
-@Getter
+@ToString
+@EqualsAndHashCode
 public class ActiveUser {
 
-    private Long id;
-    List<Book> books;
+    private final Long id;
+    private final List<ReservedBook> reservedBooks;
 
-    public ActiveUser(Long id, List<Book> books) {
+    public ActiveUser(Long id, List<ReservedBook> reservedBooks) {
         this.id = id;
-        this.books = books;
+        this.reservedBooks = reservedBooks;
     }
 
-    public void assign(ReservedBook reservedBook) {
-        if (books.size() < 3){
-            books.add(reservedBook);
+    public ReservedBook reserve(AvailableBook availableBook){
+        if (reservedBooks.size() < 3){
+            ReservedBook reservedBook = new ReservedBook(availableBook.getIdAsLong(), id);
+            reservedBooks.add(reservedBook);
+            return reservedBook;
         } else {
             throw new TooManyBooksAssignedToUserException(id);
         }
+    }
+
+    public Long getIdAsLong(){
+        return id;
+    }
+
+    public List<ReservedBook> getReservedBookList(){
+        return reservedBooks;
     }
 }

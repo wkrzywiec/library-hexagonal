@@ -59,15 +59,15 @@ public class BorrowingFacadeTest {
         AvailableBook availableBook = ReservationTestData.anyAvailableBook(reservationCommand.getBookId());
         ActiveUser activeUser = ReservationTestData.anyActiveUser(reservationCommand.getUserId());
 
-        database.activeUsers.put(activeUser.getId(), activeUser);
-        database.availableBooks.put(availableBook.getId(), availableBook);
+        database.activeUsers.put(activeUser.getIdAsLong(), activeUser);
+        database.availableBooks.put(availableBook.getIdAsLong(), availableBook);
 
         //when
         facade.handle(reservationCommand);
 
         //then
-        assertEquals(1, activeUser.getBooks().size());
-        assertEquals(availableBook.getId(), activeUser.getBooks().get(0).getId());
+        assertEquals(1, activeUser.getReservedBookList().size());
+        assertEquals(availableBook.getIdAsLong(), activeUser.getReservedBookList().get(0).getIdAsLong());
     }
 
     @Test
@@ -86,11 +86,11 @@ public class BorrowingFacadeTest {
 
         ActiveUser activeUser = ReservationTestData.anyActiveUser(firstReservationCommand.getUserId());
 
-        database.availableBooks.put(availableBookNo1.getId(), availableBookNo1);
-        database.availableBooks.put(availableBookNo2.getId(), availableBookNo2);
-        database.availableBooks.put(availableBookNo3.getId(), availableBookNo3);
-        database.availableBooks.put(availableBookNo4.getId(), availableBookNo4);
-        database.activeUsers.put(activeUser.getId(), activeUser);
+        database.availableBooks.put(availableBookNo1.getIdAsLong(), availableBookNo1);
+        database.availableBooks.put(availableBookNo2.getIdAsLong(), availableBookNo2);
+        database.availableBooks.put(availableBookNo3.getIdAsLong(), availableBookNo3);
+        database.availableBooks.put(availableBookNo4.getIdAsLong(), availableBookNo4);
+        database.activeUsers.put(activeUser.getIdAsLong(), activeUser);
 
         facade.handle(firstReservationCommand);
         facade.handle(secondReservationCommand);
@@ -109,7 +109,7 @@ public class BorrowingFacadeTest {
         BookReservationCommand reservationCommand = ReservationTestData.anyBookReservation(100L, 100L);
         ActiveUser activeUser = ReservationTestData.anyActiveUser(reservationCommand.getUserId());
 
-        database.activeUsers.put(activeUser.getId(), activeUser);
+        database.activeUsers.put(activeUser.getIdAsLong(), activeUser);
 
         assertThrows(
                 AvailableBookNotFoundExeption.class,
@@ -123,7 +123,7 @@ public class BorrowingFacadeTest {
         BookReservationCommand reservationCommand = ReservationTestData.anyBookReservation(100L, 100L);
         AvailableBook availableBook = ReservationTestData.anyAvailableBook(reservationCommand.getBookId());
 
-        database.availableBooks.put(availableBook.getId(), availableBook);
+        database.availableBooks.put(availableBook.getIdAsLong(), availableBook);
 
         //when & then
         assertThrows(

@@ -37,9 +37,8 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook {
                 database.getActiveUser(bookReservation.getUserId())
                 .orElseThrow(() -> new ActiveUserNotFoundException(bookReservation.getUserId()));
 
-        ReservedBook reservedBook = availableBook.reserve();
-        activeUser.assign(reservedBook);
-        database.saveReservationFor(activeUser, reservedBook);
+        ReservedBook reservedBook = activeUser.reserve(availableBook);
+        database.save(reservedBook);
 
         emailSender.sendReservationConfirmationEmail(activeUser, reservedBook);
     }

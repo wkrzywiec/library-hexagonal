@@ -10,5 +10,5 @@ public interface BorrowingDatabase {
     void setBookAvailable(Long bookId);
     Optional<AvailableBook> getAvailableBook(Long bookId);
     Optional<ActiveUser> getActiveUser(Long userId);
-    void saveReservationFor(ActiveUser activeUser, ReservedBook reservedBook);
+    void save(ReservedBook reservedBook);
 }

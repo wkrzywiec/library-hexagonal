@@ -1,19 +1,20 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing.model;
 
-import lombok.Getter;
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Value
-@Getter
+@ToString
+@EqualsAndHashCode
 public class AvailableBook implements Book {
 
-    private Long id;
+    private final Long id;
 
     public AvailableBook(Long id) {
         this.id = id;
     }
 
-    public ReservedBook reserve(){
-        return new ReservedBook(id);
+    @Override
+    public Long getIdAsLong() {
+        return id;
     }
 }

@@ -4,6 +4,7 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.Book;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.model.BookReservationCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.model.ReservedBook;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,6 @@ public class ReservationTestData {
     }
 
     public static ActiveUser anyActiveUser(Long userId){
-        return new ActiveUser(userId, new ArrayList<Book>());
+        return new ActiveUser(userId, new ArrayList<ReservedBook>());
     }
 }
