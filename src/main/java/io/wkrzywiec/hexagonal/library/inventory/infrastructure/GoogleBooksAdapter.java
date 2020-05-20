@@ -3,7 +3,11 @@ package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.Author;
+import io.wkrzywiec.hexagonal.library.inventory.model.Book;
+import io.wkrzywiec.hexagonal.library.inventory.model.BookIdentification;
+import io.wkrzywiec.hexagonal.library.inventory.model.Isbn10;
+import io.wkrzywiec.hexagonal.library.inventory.model.Isbn13;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -12,7 +16,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,7 +29,7 @@ class GoogleBooksAdapter implements GetBookDetails {
     private final RestTemplate restTemplate;
 
     @Override
-    public BookDetailsDTO handle(String googleBookId) {
+    public Book handle(String googleBookId) {
 
         HttpHeaders requestHeader = new HttpHeaders();
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestHeader);
@@ -44,18 +47,19 @@ class GoogleBooksAdapter implements GetBookDetails {
 
         JsonObject volumeInfo = response.getAsJsonObject("volumeInfo");
 
-        return BookDetailsDTO.builder()
-                .bookExternalId(googleBookId)
-                .isbn10(extractIsbn(volumeInfo, "ISBN_10"))
-                .isbn13(extractIsbn(volumeInfo, "ISBN_13"))
-                .title(volumeInfo.get("title").getAsString())
-                .authors(extractAuthors(volumeInfo))
-                .publisher(volumeInfo.get("publisher").getAsString())
-                .publishedDate(volumeInfo.get("publishedDate").getAsString())
-                .description(volumeInfo.get("description").getAsString())
-                .pages(volumeInfo.get("pageCount").getAsInt())
-                .imageLink(extractImage(volumeInfo))
-                .build();
+        Isbn10 isbn10 = new Isbn10(extractIsbn(volumeInfo, "ISBN_10"));
+        Isbn13 isbn13 = new Isbn13(extractIsbn(volumeInfo, "ISBN_13"));
+
+        return new Book(
+                new BookIdentification(googleBookId, isbn10, isbn13),
+                volumeInfo.get("title").getAsString(),
+                extractAuthors(volumeInfo),
+                volumeInfo.get("publisher").getAsString(),
+                volumeInfo.get("publishedDate").getAsString(),
+                volumeInfo.get("description").getAsString(),
+                volumeInfo.get("pageCount").getAsInt(),
+                extractImage(volumeInfo)
+        );
     }
 
     private String extractIsbn(JsonObject volumeInfo, String isbnType) {
@@ -72,7 +76,7 @@ class GoogleBooksAdapter implements GetBookDetails {
                 .orElseThrow(() -> new RuntimeException("Inside volumeInfo there is no " + isbnType));
     }
 
-    private List<String> extractAuthors(JsonObject volumeInfo) {
+    private Set<Author> extractAuthors(JsonObject volumeInfo) {
         return StreamSupport.stream(
                 ofNullable(volumeInfo)
                         .map(volume -> volume.getAsJsonArray("authors"))
@@ -80,7 +84,8 @@ class GoogleBooksAdapter implements GetBookDetails {
                         .spliterator(),
                 false)
                 .map(JsonElement::getAsString)
-                .collect(Collectors.toList());
+                .map(Author::new)
+                .collect(Collectors.toSet());
     }
 
     private String extractImage(JsonObject volumeInfo) {

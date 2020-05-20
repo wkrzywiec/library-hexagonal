@@ -2,7 +2,6 @@ package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.inventory.InventoryFacade;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
-import io.wkrzywiec.hexagonal.library.inventory.infrastructure.repository.BookRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;

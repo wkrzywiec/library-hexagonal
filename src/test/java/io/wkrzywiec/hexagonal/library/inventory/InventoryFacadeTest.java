@@ -1,8 +1,8 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
+import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,17 +27,17 @@ public class InventoryFacadeTest {
     @DisplayName("Correctly save a new book in a repository")
     public void correctlySaveBook(){
         //given
-        BookDetailsDTO expectedBook = TestData.homoDeusBookDetailsDTO();
+        Book expectedBook = TestData.homoDeusBook();
         AddNewBookCommand externalBookId = AddNewBookCommand
                 .builder()
-                .googleBookId(expectedBook.getBookExternalId())
+                .googleBookId(TestData.homoDeusBookGoogleId())
                 .build();
 
         //when
         facade.handle(externalBookId);
 
         //then
-        BookDetailsDTO actualBook = database.books.get(1L);
+        Book actualBook = database.books.get(1L);
         assertEquals(expectedBook, actualBook);
     }
 }

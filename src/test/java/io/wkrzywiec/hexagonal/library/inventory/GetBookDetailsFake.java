@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.wkrzywiec.hexagonal.library.TestData;
-import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 
 import java.util.HashMap;
@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class GetBookDetailsFake implements GetBookDetails {
 
-    private Map<String, BookDetailsDTO> bookDetails;
+    private Map<String, Book> books;
 
     public GetBookDetailsFake() {
-        bookDetails = new HashMap<String, BookDetailsDTO>();
-        bookDetails.put(
-                TestData.homoDeusBookDetailsDTO().getBookExternalId(),
-                TestData.homoDeusBookDetailsDTO());
+        books = new HashMap<String, Book>();
+        books.put(
+                TestData.homoDeusBookGoogleId(),
+                TestData.homoDeusBook());
     }
 
     @Override
-    public BookDetailsDTO handle(String bookId) {
-        return bookDetails.get(bookId);
+    public Book handle(String bookId) {
+        return books.get(bookId);
     }
 }

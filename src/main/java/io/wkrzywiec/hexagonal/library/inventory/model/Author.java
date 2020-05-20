@@ -1,6 +1,7 @@
-package io.wkrzywiec.hexagonal.library.inventory.infrastructure.repository;
+package io.wkrzywiec.hexagonal.library.inventory.model;
 
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Builder
 @Entity
 @Table(name="author")
-public class AuthorEntiy {
+@EqualsAndHashCode
+@ToString
+public class Author {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -21,4 +23,11 @@ public class AuthorEntiy {
 
     @Column(name="name", unique=true)
     private String name;
+
+    public Author(String name) {
+        this.name = name;
+    }
+
+    private Author() {
+    }
 }

@@ -31,8 +31,8 @@ public class BorrowingDatabaseAdapterITCase {
 
         jdbcTemplate.update(
                 "INSERT INTO book (book_external_id, title) VALUES (?, ?)",
-                TestData.homoDeusBookDetailsDTO().getBookExternalId(),
-                TestData.homoDeusBookDetailsDTO().getTitle());
+                TestData.homoDeusBookGoogleId(),
+                TestData.homoDeusBookTitle());
 
         jdbcTemplate.update(
                 "INSERT INTO user (first_name, last_name, email) VALUES (?, ?, ?)",
@@ -48,7 +48,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookDetailsDTO().getTitle());
+                TestData.homoDeusBookTitle());
 
         //when
         database.setBookAvailable(bookId);
@@ -68,7 +68,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookDetailsDTO().getTitle());
+                TestData.homoDeusBookTitle());
 
         jdbcTemplate.update(
                 "INSERT INTO available (book_id) VALUES (?)",
@@ -106,7 +106,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookDetailsDTO().getTitle());
+                TestData.homoDeusBookTitle());
 
         Long activeUserId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",

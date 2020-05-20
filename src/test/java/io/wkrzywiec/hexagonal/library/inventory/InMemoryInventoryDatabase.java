@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
-import io.wkrzywiec.hexagonal.library.inventory.model.BookDetailsDTO;
+import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryInventoryDatabase implements InventoryDatabase {
 
-    ConcurrentHashMap<Long, BookDetailsDTO> books = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Long, Book> books = new ConcurrentHashMap<>();
 
     @Override
-    public void save(BookDetailsDTO newBookDTO) {
+    public void save(Book book) {
         Long id = books.size() + 1L;
-        books.put(id, newBookDTO);
+        books.put(id, book);
     }
 }
