@@ -1,7 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory.model;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +20,6 @@ import java.util.Set;
 @Entity
 @Table(name="book")
 @EqualsAndHashCode
-@ToString
 public class Book {
 
     @Id

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,27 +42,27 @@ class BorrowingDatabaseAdapter implements BorrowingDatabase {
     @Override
     public Optional<ActiveUser> getActiveUser(Long userId) {
         try {
-            boolean isActiveUserAvailable = Optional.ofNullable(
-                    jdbcTemplate.queryForObject(
+            jdbcTemplate.queryForObject(
                             "SELECT id FROM public.user as u WHERE u.id = ?",
                             Long.class,
-                            userId)).isPresent();
-
-            if (isActiveUserAvailable){
-                List<ReservedBook> reservedBooksByUser =
-                    jdbcTemplate.queryForList(
-                            "SELECT book_id FROM reserved WHERE reserved.user_id = ?",
-                            ReservedBook.class,
-                            userId
-                    );
-                return Optional.of(
-                        new ActiveUser(userId, reservedBooksByUser)
-                );
-            } else {
-                return Optional.empty();
-            }
+                            userId);
         } catch (DataAccessException exception) {
             return Optional.empty();
+        }
+
+        List<ReservedBook> reservedBooksByUser = getReservedBooksByUser(userId);
+        return Optional.of(new ActiveUser(userId, reservedBooksByUser));
+    }
+
+    private List<ReservedBook> getReservedBooksByUser(Long userId) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT book_id FROM reserved WHERE reserved.user_id = ?",
+                    ReservedBook.class,
+                    userId
+            );
+        } catch (DataAccessException exception){
+            return new ArrayList<>();
         }
     }
 

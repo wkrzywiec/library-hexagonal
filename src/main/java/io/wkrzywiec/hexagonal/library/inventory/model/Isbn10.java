@@ -1,13 +1,11 @@
 package io.wkrzywiec.hexagonal.library.inventory.model;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @EqualsAndHashCode
-@ToString
 @Embeddable
 public class Isbn10 {
     @Column(name="isbn_10")

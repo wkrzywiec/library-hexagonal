@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @EqualsAndHashCode
-@ToString
 @Embeddable
 public class Isbn13 {
 

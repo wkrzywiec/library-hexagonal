@@ -2,12 +2,10 @@ package io.wkrzywiec.hexagonal.library.borrowing.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Builder
 public class BookReservationCommand {
     private Long bookId;
