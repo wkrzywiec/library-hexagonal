@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -34,13 +35,14 @@ public class InventoryDatabaseAdapterITCase {
         Book homoDeusBook = TestData.homoDeusBook();
 
         //when
-        database.save(homoDeusBook);
+        Book savedBook = database.save(homoDeusBook);
 
         //then
         Long savedBookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book",
-                Long.class);
+                "SELECT id FROM book WHERE id = ?",
+                Long.class,
+                savedBook.getIdAsLong());
 
-        assertTrue(savedBookId > 0);
+        assertEquals(savedBook.getIdAsLong(), savedBookId);
     }
 }

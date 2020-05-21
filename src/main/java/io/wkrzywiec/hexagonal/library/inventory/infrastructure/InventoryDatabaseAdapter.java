@@ -10,7 +10,7 @@ class InventoryDatabaseAdapter implements InventoryDatabase {
     private final BookRepository repository;
 
     @Override
-    public void save(Book book) {
-        repository.save(book);
+    public Book save(Book book) {
+        return repository.save(book);
     }
 }

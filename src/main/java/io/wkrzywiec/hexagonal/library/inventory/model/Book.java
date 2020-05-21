@@ -67,6 +67,10 @@ public class Book {
         this.imageLink = imageLink;
     }
 
+    public Long getIdAsLong(){
+        return id;
+    }
+
     private Book() {
     }
 }

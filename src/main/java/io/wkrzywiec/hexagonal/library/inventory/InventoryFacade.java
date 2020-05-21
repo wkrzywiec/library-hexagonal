@@ -19,6 +19,7 @@ public class InventoryFacade implements AddNewBook{
     @Override
     public void handle(AddNewBookCommand addNewBookCommand){
         Book book = getBookDetails.handle(addNewBookCommand.getGoogleBookId());
-        database.save(book);
+        Book savedBook = database.save(book);
+
     }
 }
