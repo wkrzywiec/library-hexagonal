@@ -1,15 +1,13 @@
 package io.wkrzywiec.hexagonal.library.inventory.model;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
-@EqualsAndHashCode
-@ToString
 @Embeddable
+@EqualsAndHashCode
 public class BookIdentification {
 
     @Column(name="book_external_id")

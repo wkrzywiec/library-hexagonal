@@ -2,11 +2,9 @@ package io.wkrzywiec.hexagonal.library.borrowing.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
-@ToString
-@EqualsAndHashCode
 @Getter
+@EqualsAndHashCode
 public class ReservationDetails {
 
     private final ReservationId reservationId;

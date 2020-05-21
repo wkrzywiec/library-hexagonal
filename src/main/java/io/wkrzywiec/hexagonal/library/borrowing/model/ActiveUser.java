@@ -2,11 +2,9 @@ package io.wkrzywiec.hexagonal.library.borrowing.model;
 
 import io.wkrzywiec.hexagonal.library.borrowing.model.exception.TooManyBooksAssignedToUserException;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.List;
 
-@ToString
 @EqualsAndHashCode
 public class ActiveUser {
 
