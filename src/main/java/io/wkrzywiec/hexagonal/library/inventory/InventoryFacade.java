@@ -4,7 +4,7 @@ import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.model.NewBookWasAddedEvent;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
-import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.EventPublisher;
+import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryEventPublisher;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase;
 
@@ -13,9 +13,9 @@ public class InventoryFacade implements AddNewBook{
 
     private InventoryDatabase database;
     private GetBookDetails getBookDetails;
-    private EventPublisher eventPublisher;
+    private InventoryEventPublisher eventPublisher;
 
-    public InventoryFacade(InventoryDatabase database, GetBookDetails getBookDetails, EventPublisher eventPublisher) {
+    public InventoryFacade(InventoryDatabase database, GetBookDetails getBookDetails, InventoryEventPublisher eventPublisher) {
         this.database = database;
         this.getBookDetails = getBookDetails;
         this.eventPublisher = eventPublisher;

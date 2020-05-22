@@ -2,6 +2,7 @@ package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.inventory.InventoryFacade;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -15,9 +16,15 @@ class InventoryDomainConfig {
     }
 
     @Bean
-    AddNewBook addNewBook(BookRepository repository, RestTemplate restTemplate){
+    SpringInventoryEventPublisherAdapter springInventoryEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        return new SpringInventoryEventPublisherAdapter(applicationEventPublisher);
+    }
+
+    @Bean
+    AddNewBook addNewBook(BookRepository repository, RestTemplate restTemplate, ApplicationEventPublisher applicationEventPublisher){
         return new InventoryFacade(
                 new InventoryDatabaseAdapter(repository),
-                new GoogleBooksAdapter(restTemplate));
+                new GoogleBooksAdapter(restTemplate),
+                springInventoryEventPublisher(applicationEventPublisher));
     }
 }

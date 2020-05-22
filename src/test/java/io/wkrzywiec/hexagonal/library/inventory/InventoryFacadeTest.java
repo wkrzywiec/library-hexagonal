@@ -4,6 +4,7 @@ import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
+import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryEventPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,13 +16,15 @@ public class InventoryFacadeTest {
 
     private GetBookDetails getBookDetails;
     private InMemoryInventoryDatabase database;
+    private InventoryEventPublisher eventPublisher;
     private InventoryFacade facade;
 
     @BeforeEach
     public void init() {
         database = new InMemoryInventoryDatabase();
         getBookDetails = new GetBookDetailsFake();
-        facade = new InventoryFacade(database, getBookDetails);
+        eventPublisher = new InvenotryEventPublisherFake();
+        facade = new InventoryFacade(database, getBookDetails, eventPublisher);
     }
 
     @Test
