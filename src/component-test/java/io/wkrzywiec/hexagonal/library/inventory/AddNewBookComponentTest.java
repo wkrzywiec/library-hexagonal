@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AddNewBookTest {
+public class AddNewBookComponentTest {
 
     @LocalServerPort
     private int port;
