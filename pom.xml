@@ -131,6 +131,10 @@
 				</executions>
 				<configuration>
 					<reportsDirectory>${surefire.and.failsafe.report.dir}</reportsDirectory>
+					<includes>
+						<include>**/*ITCase.java</include>
+						<include>**/*ComponentTest.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>

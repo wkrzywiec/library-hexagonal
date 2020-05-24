@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
-class BorrowingDatabaseAdapter implements BorrowingDatabase {
+public class BorrowingDatabaseAdapter implements BorrowingDatabase {
 
     private JdbcTemplate jdbcTemplate;
 

@@ -24,7 +24,7 @@ import java.util.stream.StreamSupport;
 import static java.util.Optional.ofNullable;
 
 @RequiredArgsConstructor
-class GoogleBooksAdapter implements GetBookDetails {
+public class GoogleBooksAdapter implements GetBookDetails {
 
     private final RestTemplate restTemplate;
 
