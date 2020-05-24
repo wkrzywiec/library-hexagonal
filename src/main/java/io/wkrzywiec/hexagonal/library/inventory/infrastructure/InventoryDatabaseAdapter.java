@@ -5,7 +5,7 @@ import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.InventoryDatabase
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class InventoryDatabaseAdapter implements InventoryDatabase {
+public class InventoryDatabaseAdapter implements InventoryDatabase {
 
     private final BookRepository repository;
 

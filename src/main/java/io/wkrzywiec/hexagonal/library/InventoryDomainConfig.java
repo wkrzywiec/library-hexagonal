@@ -1,6 +1,10 @@
-package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
+package io.wkrzywiec.hexagonal.library;
 
 import io.wkrzywiec.hexagonal.library.inventory.InventoryFacade;
+import io.wkrzywiec.hexagonal.library.inventory.infrastructure.BookRepository;
+import io.wkrzywiec.hexagonal.library.inventory.infrastructure.GoogleBooksAdapter;
+import io.wkrzywiec.hexagonal.library.inventory.infrastructure.InventoryDatabaseAdapter;
+import io.wkrzywiec.hexagonal.library.inventory.infrastructure.SpringInventoryEventPublisherAdapter;
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -9,11 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 class InventoryDomainConfig {
-
-    @Bean
-    RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
 
     @Bean
     SpringInventoryEventPublisherAdapter springInventoryEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
