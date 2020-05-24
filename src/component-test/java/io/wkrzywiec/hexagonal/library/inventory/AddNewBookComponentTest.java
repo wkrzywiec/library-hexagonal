@@ -2,8 +2,10 @@ package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
+import io.wkrzywiec.hexagonal.library.DatabaseCleanup;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,12 +28,20 @@ public class AddNewBookComponentTest {
     @Autowired
     private JdbcTemplate jdbc;
 
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+
     private String baseURL;
 
     @BeforeEach
     public void init(){
         this.baseURL = "http://localhost:" + port;
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+    }
+
+    @AfterEach
+    public void after() {
+        databaseCleanup.execute();
     }
 
     @Test

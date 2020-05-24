@@ -1,9 +1,11 @@
 package io.wkrzywiec.hexagonal.library.borrowing;
 
+import io.wkrzywiec.hexagonal.library.DatabaseCleanup;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.borrowing.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.inventory.infrastructure.BookRepository;
 import io.wkrzywiec.hexagonal.library.inventory.model.Book;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,10 @@ public class MakeReservationComponentTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+
+
     private String baseURL;
 
     @BeforeEach
@@ -43,6 +49,11 @@ public class MakeReservationComponentTest {
                 "John",
                 "Doe",
                 "john.doe@test.com");
+    }
+
+    @AfterEach
+    public void after() {
+        databaseCleanup.execute();
     }
 
     @Test
