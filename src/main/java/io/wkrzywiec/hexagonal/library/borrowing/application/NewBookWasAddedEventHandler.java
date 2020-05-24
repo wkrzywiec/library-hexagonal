@@ -5,11 +5,13 @@ import io.wkrzywiec.hexagonal.library.borrowing.ports.incoming.MakeBookAvailable
 import io.wkrzywiec.hexagonal.library.inventory.model.NewBookWasAddedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class NewBookWasAddedEventHandler {
 
-    private MakeBookAvailable makeBookAvailable;
+    private final MakeBookAvailable makeBookAvailable;
 
     @EventListener
     public void handle(NewBookWasAddedEvent event){

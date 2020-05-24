@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.greaterThan;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,8 +52,8 @@ public class AddNewBookComponentTest {
     }
 
     @Test
-    @DisplayName("Add new book to a database")
-    public void givenGoogleBooId_whenAddNewBook_thenBookIsSaved(){
+    @DisplayName("Add new book to a database & make it available")
+    public void givenGoogleBooId_whenAddNewBook_thenBookIsSaved() {
         //given
         AddNewBookCommand addNewBookCommand =
                 AddNewBookCommand.builder()
@@ -77,6 +74,14 @@ public class AddNewBookComponentTest {
                 "SELECT id FROM book WHERE book_external_id = ?",
                 Long.class,
                 TestData.homoDeusBookGoogleId());
+
         assertTrue(savedBookId > 0);
+
+        Long availableBookId = jdbc.queryForObject(
+                "SELECT id FROM available WHERE book_id = ?",
+                Long.class,
+                savedBookId);
+
+        assertTrue(availableBookId > 0);
     }
 }
