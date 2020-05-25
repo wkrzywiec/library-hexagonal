@@ -1,8 +1,10 @@
-package io.wkrzywiec.hexagonal.library.email;
+package io.wkrzywiec.hexagonal.library.email.infrastructure;
 
 //import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
 
-public class SendGridEmailSender implements EmailSender {
+import io.wkrzywiec.hexagonal.library.email.ports.outgoing.EmailSender;
+
+public class SendGridEmailSender {
 
 //    @Override
 //    public void sendReservationConfirmationEmail(ReservationDetails reservationDetails) {
