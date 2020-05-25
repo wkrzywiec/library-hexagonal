@@ -15,8 +15,10 @@ public class EmailFacade implements SendReservationConfirmation {
 
     @Override
     public void handle(SendReservationConfirmationCommand sendReservationConfirmation) {
-        String bookTitle = database.getTitleByBookId(sendReservationConfirmation.getBookId());
-        String userEmailAddress = database.getUserEmailAddress(sendReservationConfirmation.getUserId());
+        String bookTitle = database
+                .getTitleByBookId(sendReservationConfirmation.getBookId());
+        String userEmailAddress = database
+                .getUserEmailAddress(sendReservationConfirmation.getUserId());
 
         Email email = EmailCreator.reservationEmail(
                 sendReservationConfirmation.getReservationId(),
