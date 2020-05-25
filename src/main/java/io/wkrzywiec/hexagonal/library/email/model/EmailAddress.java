@@ -17,4 +17,8 @@ public class EmailAddress {
         }
 
     }
+
+    public String getAsString() {
+        return value;
+    }
 }

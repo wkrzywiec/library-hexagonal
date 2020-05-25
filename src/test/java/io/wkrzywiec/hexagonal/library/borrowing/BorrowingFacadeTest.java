@@ -7,6 +7,7 @@ import io.wkrzywiec.hexagonal.library.borrowing.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.borrowing.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.borrowing.model.exception.AvailableBookNotFoundExeption;
 import io.wkrzywiec.hexagonal.library.borrowing.model.exception.TooManyBooksAssignedToUserException;
+import io.wkrzywiec.hexagonal.library.borrowing.ports.outgoing.BorrowingEventPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +20,13 @@ public class BorrowingFacadeTest {
 
     private BorrowingFacade facade;
     private InMemoryBorrowingDatabase database;
+    private BorrowingEventPublisher eventPublisher;
 
     @BeforeEach
     public void init(){
         database = new InMemoryBorrowingDatabase();
-        facade = new BorrowingFacade(database);
+        eventPublisher = new BorrowingEventPublisherFake();
+        facade = new BorrowingFacade(database, eventPublisher);
     }
 
     @Test
