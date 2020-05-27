@@ -6,12 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-@DataJpaTest
+@SpringBootTest
 public class InventoryDatabaseAdapterITCase {
 
     @Autowired
@@ -29,6 +31,7 @@ public class InventoryDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Save new book in database")
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBook_whenSaveIt_thenBookIsSaved() {
         //given
         Book homoDeusBook = TestData.homoDeusBook();

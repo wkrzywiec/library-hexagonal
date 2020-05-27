@@ -1,11 +1,9 @@
 package io.wkrzywiec.hexagonal.library.borrowing;
 
-import io.wkrzywiec.hexagonal.library.DatabaseCleanup;
+import io.restassured.RestAssured;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.borrowing.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.inventory.infrastructure.BookRepository;
-import io.wkrzywiec.hexagonal.library.inventory.model.Book;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MakeReservationComponentTest {
@@ -29,35 +29,18 @@ public class MakeReservationComponentTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private DatabaseCleanup databaseCleanup;
-
-
     private String baseURL;
 
     @BeforeEach
     public void init() {
         this.baseURL = "http://localhost:" + port;
-
-        Book book = bookRepository.save(TestData.homoDeusBook());
-        jdbcTemplate.update(
-                "INSERT INTO available (book_id) VALUES (?)",
-                book.getIdAsLong());
-
-        jdbcTemplate.update(
-                "INSERT INTO user (first_name, last_name, email) VALUES (?, ?, ?)",
-                "John",
-                "Doe",
-                "john.doe@test.com");
-    }
-
-    @AfterEach
-    public void after() {
-        databaseCleanup.execute();
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     @Test
     @DisplayName("Reserve available book")
+    @Sql({"/book-and-user.sql", "/available-book.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookIsAvailable_thenMakeReservation_thenBookIsReserved() {
         //given
         Long homoDeusBookId = jdbcTemplate.queryForObject(
@@ -69,7 +52,6 @@ public class MakeReservationComponentTest {
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
                 "john.doe@test.com");
-
 
         BookReservationCommand reservationCommand =
                 BookReservationCommand.builder()

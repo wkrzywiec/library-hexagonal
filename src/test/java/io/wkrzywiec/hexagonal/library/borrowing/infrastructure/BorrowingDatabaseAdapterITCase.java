@@ -9,15 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-@JdbcTest
+@SpringBootTest
 public class BorrowingDatabaseAdapterITCase {
 
     @Autowired
@@ -28,21 +30,12 @@ public class BorrowingDatabaseAdapterITCase {
     @BeforeEach
     public void init(){
         database = new BorrowingDatabaseAdapter(jdbcTemplate);
-
-        jdbcTemplate.update(
-                "INSERT INTO book (book_external_id, title) VALUES (?, ?)",
-                TestData.homoDeusBookGoogleId(),
-                TestData.homoDeusBookTitle());
-
-        jdbcTemplate.update(
-                "INSERT INTO user (first_name, last_name, email) VALUES (?, ?, ?)",
-                "John",
-                "Doe",
-                "john.doe@test.com");
     }
 
     @Test
     @DisplayName("Save book as available")
+    @Sql("/book-and-user.sql")
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveAvailableBook(){
         //given
         Long bookId = jdbcTemplate.queryForObject(
@@ -63,16 +56,14 @@ public class BorrowingDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Get available book by id")
+    @Sql({"/book-and-user.sql", "/available-book.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetAvailableBook(){
         //given
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
                 TestData.homoDeusBookTitle());
-
-        jdbcTemplate.update(
-                "INSERT INTO available (book_id) VALUES (?)",
-                bookId);
 
         //when
         Optional<AvailableBook> availableBookOptional = database.getAvailableBook(bookId);
@@ -84,6 +75,8 @@ public class BorrowingDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Get active user by id")
+    @Sql("/book-and-user.sql")
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetActiveUser() {
         //given
         Long activeUserId = jdbcTemplate.queryForObject(
@@ -101,6 +94,8 @@ public class BorrowingDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Save reserved book")
+    @Sql({"/book-and-user.sql", "/available-book.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveReservedBook(){
         //given
         Long bookId = jdbcTemplate.queryForObject(
@@ -119,7 +114,6 @@ public class BorrowingDatabaseAdapterITCase {
         ReservationDetails reservationDetails = database.save(reservedBook);
 
         //then
-
         assertEquals(bookId, reservationDetails.getReservedBook().getIdAsLong());
         assertEquals(activeUserId, reservationDetails.getReservedBook().getAssignedUserIdAsLong());
         assertTrue(reservationDetails.getReservationId().getIdAsLong() > 0);

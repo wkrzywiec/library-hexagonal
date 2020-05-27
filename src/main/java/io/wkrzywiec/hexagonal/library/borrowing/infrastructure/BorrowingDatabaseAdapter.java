@@ -6,7 +6,7 @@ import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.borrowing.ports.outgoing.BorrowingDatabase;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BorrowingDatabaseAdapter implements BorrowingDatabase {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void setBookAvailable(Long bookId) {

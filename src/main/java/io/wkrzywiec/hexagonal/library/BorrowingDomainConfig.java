@@ -8,10 +8,8 @@ import io.wkrzywiec.hexagonal.library.borrowing.ports.outgoing.BorrowingDatabase
 import io.wkrzywiec.hexagonal.library.borrowing.ports.outgoing.BorrowingEventPublisher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-@Configuration
 public class BorrowingDomainConfig {
 
     @Bean
