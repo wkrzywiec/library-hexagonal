@@ -1,41 +1,38 @@
 package io.wkrzywiec.hexagonal.library.email.infrastructure;
 
-//import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
-
-import io.wkrzywiec.hexagonal.library.email.model.Email;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import io.wkrzywiec.hexagonal.library.email.model.ReservationConfirmEmail;
 import io.wkrzywiec.hexagonal.library.email.ports.outgoing.EmailSender;
+
+import java.io.IOException;
 
 public class SendGridEmailSender implements EmailSender {
 
     @Override
-    public void sendReservationConfirmationEmail(Email email) {
+    public void sendReservationConfirmationEmail(ReservationConfirmEmail reservationConfirmEmail) {
+        Email from = new Email(reservationConfirmEmail.getFromEmailAddressAsString());
+        Email to = new Email(reservationConfirmEmail.getToEmailAddressAsString());
+        Content content = new Content("text/plain", reservationConfirmEmail.getContentAsString());
+        Mail mail = new Mail(
+                from,
+                reservationConfirmEmail.getSubjectAsString(),
+                to,
+                content);
 
+        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            sg.api(request);
+        } catch (IOException ex) {
+            System.out.print(ex);
+        }
     }
-
-//    @Override
-//    public void sendReservationConfirmationEmail(ReservationDetails reservationDetails) {
-        // email address - to
-        // repl9oservation id
-        // book title`
-
-//        Email from = new Email("test@example.com");
-//        String subject = "Sending with SendGrid is Fun";
-//        Email to = new Email("test@example.com");
-//        Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
-//        Mail mail = new Mail(from, subject, to, content);
-//
-//        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-//        Request request = new Request();
-//        try {
-//            request.setMethod(Method.POST);
-//            request.setEndpoint("mail/send");
-//            request.setBody(mail.build());
-//            Response response = sg.api(request);
-//            System.out.println(response.getStatusCode());
-//            System.out.println(response.getBody());
-//            System.out.println(response.getHeaders());
-//        } catch (IOException ex) {
-//
-//        }
-//    }
 }

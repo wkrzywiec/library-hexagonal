@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.email;
 
-import io.wkrzywiec.hexagonal.library.email.model.Email;
+import io.wkrzywiec.hexagonal.library.email.model.ReservationConfirmEmail;
 import io.wkrzywiec.hexagonal.library.email.model.SendReservationConfirmationCommand;
 import io.wkrzywiec.hexagonal.library.email.ports.incoming.SendReservationConfirmation;
 import io.wkrzywiec.hexagonal.library.email.ports.outgoing.EmailSender;
@@ -20,11 +20,11 @@ public class EmailFacade implements SendReservationConfirmation {
         String userEmailAddress = database
                 .getUserEmailAddress(sendReservationConfirmation.getUserId());
 
-        Email email = EmailCreator.reservationEmail(
+        ReservationConfirmEmail reservationConfirmEmail = EmailCreator.reservationEmail(
                 sendReservationConfirmation.getReservationId(),
                 bookTitle,
                 userEmailAddress
         );
-        emailSender.sendReservationConfirmationEmail(email);
+        emailSender.sendReservationConfirmationEmail(reservationConfirmEmail);
     }
 }
