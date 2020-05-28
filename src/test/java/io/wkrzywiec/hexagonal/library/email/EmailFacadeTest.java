@@ -13,12 +13,12 @@ public class EmailFacadeTest {
 
     private EmailFacade facade;
     private EmailSender emailSender;
-    private InMemoryLibraryDatabase database;
+    private InMemoryEmailDatabase database;
 
 
     @BeforeEach
     public void init() {
-        database = new InMemoryLibraryDatabase();
+        database = new InMemoryEmailDatabase();
         emailSender = new EmailSenderFake();
         facade = new EmailFacade(emailSender, database);
 
