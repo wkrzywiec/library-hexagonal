@@ -20,7 +20,9 @@
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<surefire.and.failsafe.report.dir>target/test-report</surefire.and.failsafe.report.dir>
 		<code.coverage.exclusions>
-			**/io/wkrzywiec/hexagonal/library/domain/book/dto/**,
+			**/io/wkrzywiec/hexagonal/library/borrowing/model/**,
+			**/io/wkrzywiec/hexagonal/library/email/model/**,
+			**/io/wkrzywiec/hexagonal/library/inventory/model/**,
 			**/io/wkrzywiec/hexagonal/library/infrastructure/repository/*Entity.java
 		</code.coverage.exclusions>
 	</properties>
