@@ -23,6 +23,7 @@
 			**/io/wkrzywiec/hexagonal/library/borrowing/model/**,
 			**/io/wkrzywiec/hexagonal/library/email/model/**,
 			**/io/wkrzywiec/hexagonal/library/inventory/model/**,
+			**/io/wkrzywiec/hexagonal/library/user/model/**,
 			**/io/wkrzywiec/hexagonal/library/infrastructure/repository/*Entity.java
 		</code.coverage.exclusions>
 	</properties>
