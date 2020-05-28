@@ -2,10 +2,8 @@ package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import io.wkrzywiec.hexagonal.library.DatabaseCleanup;
 import io.wkrzywiec.hexagonal.library.TestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AddNewBookComponentTest {
@@ -28,20 +28,12 @@ public class AddNewBookComponentTest {
     @Autowired
     private JdbcTemplate jdbc;
 
-    @Autowired
-    private DatabaseCleanup databaseCleanup;
-
     private String baseURL;
 
     @BeforeEach
     public void init(){
         this.baseURL = "http://localhost:" + port;
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
-
-    @AfterEach
-    public void after() {
-        databaseCleanup.execute();
     }
 
     @Test
@@ -63,6 +55,7 @@ public class AddNewBookComponentTest {
 
     @Test
     @DisplayName("Add new book to a database & make it available")
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenGoogleBooId_whenAddNewBook_thenBookIsSaved() {
         //given
         AddNewBookCommand addNewBookCommand =

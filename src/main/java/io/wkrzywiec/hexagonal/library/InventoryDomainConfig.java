@@ -8,10 +8,8 @@ import io.wkrzywiec.hexagonal.library.inventory.infrastructure.SpringInventoryEv
 import io.wkrzywiec.hexagonal.library.inventory.ports.incoming.AddNewBook;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
 class InventoryDomainConfig {
 
     @Bean
