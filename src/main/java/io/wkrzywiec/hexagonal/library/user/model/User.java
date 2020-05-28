@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user")
 @EqualsAndHashCode
-public class NewUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +30,15 @@ public class NewUser {
     @Column(name="last_name")
     private String lastName;
 
-    public NewUser(EmailAddress emailAddress, String firstName, String lastName) {
+    public User(EmailAddress emailAddress, String firstName, String lastName) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public Long getIdentifierAsLong(){
+        return id;
+    }
+
+    private User(){}
 }

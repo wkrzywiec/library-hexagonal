@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class EmailAddress {
 
     @Column(name="email")
-    private final String value;
+    private String value;
 
     public EmailAddress(String value) {
         Pattern pattern = Pattern.compile("^(.+)@(.+)$");
@@ -23,4 +23,6 @@ public class EmailAddress {
             throw new IllegalArgumentException("Provided value is not an email address");
         }
     }
+
+    private EmailAddress(){}
 }

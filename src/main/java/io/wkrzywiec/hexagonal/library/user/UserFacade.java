@@ -2,7 +2,7 @@ package io.wkrzywiec.hexagonal.library.user;
 
 import io.wkrzywiec.hexagonal.library.user.model.AddUserCommand;
 import io.wkrzywiec.hexagonal.library.user.model.EmailAddress;
-import io.wkrzywiec.hexagonal.library.user.model.NewUser;
+import io.wkrzywiec.hexagonal.library.user.model.User;
 import io.wkrzywiec.hexagonal.library.user.model.UserIdentifier;
 import io.wkrzywiec.hexagonal.library.user.ports.incoming.AddNewUser;
 import io.wkrzywiec.hexagonal.library.user.ports.outgoing.UserDatabase;
@@ -15,11 +15,11 @@ public class UserFacade implements AddNewUser {
 
     @Override
     public UserIdentifier handle(AddUserCommand addUserCommand) {
-        NewUser newUser = new NewUser(
+        User user = new User(
                 new EmailAddress(addUserCommand.getEmail()),
                 addUserCommand.getFirstName(),
                 addUserCommand.getLastName()
         );
-        return database.save(newUser);
+        return database.save(user);
     }
 }
