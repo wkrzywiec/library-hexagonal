@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.email.infrastructure;
 
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
+import io.wkrzywiec.hexagonal.library.UserTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,13 +37,13 @@ public class EmailDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         //when
         Optional<String> bookTitle = emailDatabase.getTitleByBookId(bookId);
 
         //then
-        assertEquals(Optional.of(TestData.homoDeusBookTitle()), bookTitle);
+        assertEquals(Optional.of(BookTestData.homoDeusBookTitle()), bookTitle);
     }
 
     @Test
@@ -54,7 +55,7 @@ public class EmailDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         //when
         Optional<String> bookTitle = emailDatabase.getTitleByBookId(bookId + 1124);
@@ -72,13 +73,13 @@ public class EmailDatabaseAdapterITCase {
         Long userId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
-                "john.doe@test.com");
+                UserTestData.johnDoeEmail());
 
         //when
         Optional<String> emailAddress = emailDatabase.getUserEmailAddress(userId);
 
         //then
-        assertEquals(Optional.of("john.doe@test.com"), emailAddress);
+        assertEquals(Optional.of(UserTestData.johnDoeEmail()), emailAddress);
     }
 
     @Test
@@ -90,7 +91,7 @@ public class EmailDatabaseAdapterITCase {
         Long userId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
-                "john.doe@test.com");
+                UserTestData.johnDoeEmail());
 
         //when
         Optional<String> emailAddress = emailDatabase.getUserEmailAddress(userId + 1124);

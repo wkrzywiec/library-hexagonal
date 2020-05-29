@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Import;
 		LibraryHexagonalConfig.class,
 		InventoryDomainConfig.class,
 		BorrowingDomainConfig.class,
-		EmailDomainConfig.class
+		EmailDomainConfig.class,
+		UserDomainConfig.class
 })
 public class LibraryHexagonalApplication {
 

@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.borrowing.infrastructure;
 
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
+import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.borrowing.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
@@ -41,7 +42,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         //when
         database.setBookAvailable(bookId);
@@ -63,7 +64,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         //when
         Optional<AvailableBook> availableBookOptional = database.getAvailableBook(bookId);
@@ -82,7 +83,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long activeUserId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
-                "john.doe@test.com");
+                UserTestData.johnDoeEmail());
 
         //when
         Optional<ActiveUser> activeUserOptional = database.getActiveUser(activeUserId);
@@ -101,12 +102,12 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         Long activeUserId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
-                "john.doe@test.com");
+                UserTestData.johnDoeEmail());
 
         ReservedBook reservedBook = new ReservedBook(bookId, activeUserId);
 

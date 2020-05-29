@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory.infrastructure;
 
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ public class InventoryDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBook_whenSaveIt_thenBookIsSaved() {
         //given
-        Book homoDeusBook = TestData.homoDeusBook();
+        Book homoDeusBook = BookTestData.homoDeusBook();
 
         //when
         Book savedBook = database.save(homoDeusBook);

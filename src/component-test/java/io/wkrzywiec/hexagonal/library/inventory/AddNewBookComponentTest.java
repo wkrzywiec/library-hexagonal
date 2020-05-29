@@ -2,7 +2,7 @@ package io.wkrzywiec.hexagonal.library.inventory;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +60,7 @@ public class AddNewBookComponentTest {
         //given
         AddNewBookCommand addNewBookCommand =
                 AddNewBookCommand.builder()
-                        .googleBookId(TestData.homoDeusBookGoogleId())
+                        .googleBookId(BookTestData.homoDeusBookGoogleId())
                         .build();
 
         //when
@@ -76,7 +76,7 @@ public class AddNewBookComponentTest {
         Long savedBookId = jdbc.queryForObject(
                 "SELECT id FROM book WHERE book_external_id = ?",
                 Long.class,
-                TestData.homoDeusBookGoogleId());
+                BookTestData.homoDeusBookGoogleId());
 
         assertTrue(savedBookId > 0);
 

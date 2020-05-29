@@ -8,7 +8,7 @@ import io.wkrzywiec.hexagonal.library.inventory.model.Isbn13;
 
 import java.util.Collections;
 
-public class TestData {
+public class BookTestData {
 
     public static String homoDeusBookGoogleId() {
         return "dWYyCwAAQBAJ";
