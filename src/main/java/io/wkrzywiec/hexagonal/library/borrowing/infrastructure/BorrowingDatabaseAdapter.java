@@ -73,6 +73,10 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                reservedBook.getIdAsLong(),
                reservedBook.getAssignedUserIdAsLong());
 
+        jdbcTemplate.update(
+                "DELETE FROM available WHERE book_id = ?",
+                reservedBook.getIdAsLong());
+
        ReservationId reservationId = jdbcTemplate.queryForObject(
                "SELECT id FROM reserved WHERE book_id = ?",
                ReservationId.class,
