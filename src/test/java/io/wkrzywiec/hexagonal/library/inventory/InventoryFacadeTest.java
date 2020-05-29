@@ -1,6 +1,6 @@
 package io.wkrzywiec.hexagonal.library.inventory;
 
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.inventory.model.AddNewBookCommand;
 import io.wkrzywiec.hexagonal.library.inventory.model.Book;
 import io.wkrzywiec.hexagonal.library.inventory.ports.outgoing.GetBookDetails;
@@ -33,7 +33,7 @@ public class InventoryFacadeTest {
         //given
         AddNewBookCommand externalBookId = AddNewBookCommand
                 .builder()
-                .googleBookId(TestData.homoDeusBookGoogleId())
+                .googleBookId(BookTestData.homoDeusBookGoogleId())
                 .build();
 
         //when

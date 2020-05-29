@@ -1,5 +1,6 @@
 package io.wkrzywiec.hexagonal.library.user.infrastructure;
 
+import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.user.model.EmailAddress;
 import io.wkrzywiec.hexagonal.library.user.model.User;
 import io.wkrzywiec.hexagonal.library.user.model.UserIdentifier;
@@ -36,7 +37,7 @@ public class UserDatabaseAdapterITCase {
     public void shouldSaveDatabase(){
         //given
         User user = new User(
-                new EmailAddress("john.doe@test.com"),
+                new EmailAddress(UserTestData.johnDoeEmail()),
                 "John",
                 "Doe"
         );
@@ -48,7 +49,7 @@ public class UserDatabaseAdapterITCase {
         Long savedUserId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
-                "john.doe@test.com");
+                UserTestData.johnDoeEmail());
 
         assertEquals(userIdentifier.getAsLong(), savedUserId);
     }

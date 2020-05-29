@@ -1,7 +1,7 @@
 package io.wkrzywiec.hexagonal.library.borrowing;
 
 import io.restassured.RestAssured;
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.borrowing.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.inventory.infrastructure.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ public class MakeReservationComponentTest {
         Long homoDeusBookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
-                TestData.homoDeusBookTitle());
+                BookTestData.homoDeusBookTitle());
 
         Long activeUserId = jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",

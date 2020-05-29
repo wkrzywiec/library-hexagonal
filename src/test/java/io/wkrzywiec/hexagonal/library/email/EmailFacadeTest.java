@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.email;
 
-import io.wkrzywiec.hexagonal.library.TestData;
+import io.wkrzywiec.hexagonal.library.BookTestData;
+import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.email.model.SendReservationConfirmationCommand;
 import io.wkrzywiec.hexagonal.library.email.ports.outgoing.EmailSender;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +23,8 @@ public class EmailFacadeTest {
         emailSender = new EmailSenderFake();
         facade = new EmailFacade(emailSender, database);
 
-        database.bookTitles.put(1L, TestData.homoDeusBookTitle());
-        database.emailAddresses.put(1L, "john.doe@test.com");
+        database.bookTitles.put(1L, BookTestData.homoDeusBookTitle());
+        database.emailAddresses.put(1L, UserTestData.johnDoeEmail());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package io.wkrzywiec.hexagonal.library.user;
 
+import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.user.model.AddUserCommand;
 import io.wkrzywiec.hexagonal.library.user.model.EmailAddress;
 import io.wkrzywiec.hexagonal.library.user.model.User;
@@ -27,13 +28,13 @@ public class UserFacadeTest {
     public void shouldAddNewUser(){
         //given
         User expectedUser = new User(
-                new EmailAddress("john.doe@test.com"),
+                new EmailAddress(UserTestData.johnDoeEmail()),
                 "John",
                 "Doe"
         );
 
         AddUserCommand addUserCommand = AddUserCommand.builder()
-                .email("john.doe@test.com")
+                .email(UserTestData.johnDoeEmail())
                 .firstName("John")
                 .lastName("Doe")
                 .build();
