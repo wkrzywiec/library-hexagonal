@@ -9,11 +9,15 @@ import java.util.ArrayList;
 
 public class ReservationTestData {
 
-    public static BookReservationCommand anyBookReservation(Long bookId, Long userId){
+    public static BookReservationCommand anyBookReservationCommand(Long bookId, Long userId){
         return BookReservationCommand.builder()
                 .bookId(bookId)
                 .userId(userId)
                 .build();
+    }
+
+    public static ReservedBook anyReservedBook(Long bookId, Long userId){
+        return new ReservedBook(bookId, userId);
     }
 
     public static AvailableBook anyAvailableBook(Long bookId){

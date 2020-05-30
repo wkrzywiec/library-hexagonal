@@ -2,6 +2,8 @@ package io.wkrzywiec.hexagonal.library.borrowing.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.borrowing.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.borrowing.model.MaxReservationInterval;
+import io.wkrzywiec.hexagonal.library.borrowing.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservedBook;
@@ -23,6 +25,14 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     public void setBookAvailable(Long bookId) {
         jdbcTemplate.update(
                 "INSERT INTO available (book_id) VALUES (?)",
+                bookId);
+
+        jdbcTemplate.update(
+                "DELETE FROM reserved WHERE book_id = ?",
+                bookId);
+
+        jdbcTemplate.update(
+                "DELETE FROM borrowed WHERE book_id = ?",
                 bookId);
     }
 
@@ -69,9 +79,10 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     @Override
     public ReservationDetails save(ReservedBook reservedBook) {
        jdbcTemplate.update(
-               "INSERT INTO reserved (book_id, user_id) VALUES (?, ?)",
+               "INSERT INTO reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
                reservedBook.getIdAsLong(),
-               reservedBook.getAssignedUserIdAsLong());
+               reservedBook.getAssignedUserIdAsLong(),
+               reservedBook.getReservedDateAsInstant());
 
         jdbcTemplate.update(
                 "DELETE FROM available WHERE book_id = ?",
@@ -82,5 +93,10 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                ReservationId.class,
                reservedBook.getIdAsLong());
        return new ReservationDetails(reservationId, reservedBook);
+    }
+
+    @Override
+    public List<OverdueReservation> findReservationsAfter(MaxReservationInterval maxReservationInterval) {
+        return null;
     }
 }
