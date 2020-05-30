@@ -1,10 +1,10 @@
 package io.wkrzywiec.hexagonal.library;
 
-import io.wkrzywiec.hexagonal.library.inventory.model.Author;
-import io.wkrzywiec.hexagonal.library.inventory.model.Book;
-import io.wkrzywiec.hexagonal.library.inventory.model.BookIdentification;
-import io.wkrzywiec.hexagonal.library.inventory.model.Isbn10;
-import io.wkrzywiec.hexagonal.library.inventory.model.Isbn13;
+import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.Author;
+import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.Book;
+import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.BookIdentification;
+import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.Isbn10;
+import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.Isbn13;
 
 import java.util.Collections;
 
