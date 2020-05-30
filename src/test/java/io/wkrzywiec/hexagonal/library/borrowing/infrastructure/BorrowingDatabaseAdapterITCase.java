@@ -4,6 +4,8 @@ import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.borrowing.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.borrowing.model.DueDate;
+import io.wkrzywiec.hexagonal.library.borrowing.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservedBook;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +44,7 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveAvailableBook(){
         //given
-        Long bookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
+        Long bookId = getHomoDeusBookId();
 
         //when
         database.setBookAvailable(bookId);
@@ -61,10 +63,7 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetAvailableBook(){
         //given
-        Long bookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
+        Long bookId = getHomoDeusBookId();
 
         //when
         Optional<AvailableBook> availableBookOptional = database.getAvailableBook(bookId);
@@ -80,10 +79,7 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetActiveUser() {
         //given
-        Long activeUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long activeUserId = getJohnDoeUserId();
 
         //when
         Optional<ActiveUser> activeUserOptional = database.getActiveUser(activeUserId);
@@ -99,15 +95,9 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveReservedBook(){
         //given
-        Long bookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
+        Long bookId = getHomoDeusBookId();
 
-        Long activeUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long activeUserId = getJohnDoeUserId();
 
         ReservedBook reservedBook = new ReservedBook(bookId, activeUserId);
 
@@ -118,5 +108,41 @@ public class BorrowingDatabaseAdapterITCase {
         assertEquals(bookId, reservationDetails.getReservedBook().getIdAsLong());
         assertEquals(activeUserId, reservationDetails.getReservedBook().getAssignedUserIdAsLong());
         assertTrue(reservationDetails.getReservationId().getIdAsLong() > 0);
+    }
+
+    @Test
+    @DisplayName("Find book after 3 days of reservation")
+    @Sql({"/book-and-user.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldFindOverdueReservations(){
+        //given
+        DueDate thirdDayAfterReservation = new DueDate(Instant.now().plus(3, ChronoUnit.DAYS));
+        Long overdueBookId = getHomoDeusBookId();
+        Long johnDoeUserId = getJohnDoeUserId();
+        jdbcTemplate.update(
+                "INSERT INTO public.reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
+                overdueBookId,
+                johnDoeUserId,
+                Instant.now().plus(3, ChronoUnit.DAYS));
+
+        //when
+        OverdueReservation overdueReservation = database.findReservationsAfter(thirdDayAfterReservation).get(0);
+
+        //then
+        assertEquals(overdueBookId, overdueReservation.getBookIdentificationAsLong());
+    }
+
+    private Long getHomoDeusBookId(){
+        return jdbcTemplate.queryForObject(
+                "SELECT id FROM book WHERE title = ?",
+                Long.class,
+                BookTestData.homoDeusBookTitle());
+    }
+
+    private Long getJohnDoeUserId(){
+        return jdbcTemplate.queryForObject(
+                "SELECT id FROM user WHERE email = ?",
+                Long.class,
+                UserTestData.johnDoeEmail());
     }
 }

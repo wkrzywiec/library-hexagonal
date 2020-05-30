@@ -2,7 +2,7 @@ package io.wkrzywiec.hexagonal.library.borrowing.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.borrowing.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.borrowing.model.AvailableBook;
-import io.wkrzywiec.hexagonal.library.borrowing.model.MaxReservationInterval;
+import io.wkrzywiec.hexagonal.library.borrowing.model.DueDate;
 import io.wkrzywiec.hexagonal.library.borrowing.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.borrowing.model.ReservationId;
@@ -10,11 +10,14 @@ import io.wkrzywiec.hexagonal.library.borrowing.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.borrowing.ports.outgoing.BorrowingDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class BorrowingDatabaseAdapter implements BorrowingDatabase {
@@ -96,7 +99,13 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     @Override
-    public List<OverdueReservation> findReservationsAfter(MaxReservationInterval maxReservationInterval) {
-        return null;
+    public List<OverdueReservation> findReservationsAfter(DueDate dueDate) {
+        List<OverdueReservationEntity> entities = jdbcTemplate.query(
+                "SELECT id AS reservationId, book_id AS bookIdentification FROM reserved WHERE reserved_date > ?",
+                new BeanPropertyRowMapper<OverdueReservationEntity>(OverdueReservationEntity.class),
+                Timestamp.from(dueDate.asInstant()));
+        return entities.stream()
+                .map(entity -> new OverdueReservation(entity.getReservationId(), entity.getBookIdentification()))
+                .collect(Collectors.toList());
     }
 }

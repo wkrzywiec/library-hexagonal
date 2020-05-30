@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class OverdueReservation {
-    private final ReservationId reservationId;
-    private final BookIdentification bookIdentification;
+    private Long reservationId;
+    private Long bookIdentification;
 
     public Long getBookIdentificationAsLong() {
-        return bookIdentification.getValueAsLong();
+        return bookIdentification;
     }
 }
