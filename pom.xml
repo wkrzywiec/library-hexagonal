@@ -17,14 +17,14 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<surefire.and.failsafe.report.dir>target/test-report</surefire.and.failsafe.report.dir>
 		<code.coverage.exclusions>
-			**/io/wkrzywiec/hexagonal/library/borrowing/model/**,
-			**/io/wkrzywiec/hexagonal/library/email/model/**,
-			**/io/wkrzywiec/hexagonal/library/inventory/model/**,
-			**/io/wkrzywiec/hexagonal/library/user/model/**,
-			**/io/wkrzywiec/hexagonal/library/infrastructure/repository/*Entity.java
+			**/io/wkrzywiec/hexagonal/library/domain/borrowing/core/model/**,
+			**/io/wkrzywiec/hexagonal/library/domain/email/core/model/**,
+			**/io/wkrzywiec/hexagonal/library/domain/inventory/core/model/**,
+			**/io/wkrzywiec/hexagonal/library/domain/user/core/model/**,
+			**/io/wkrzywiec/hexagonal/library/**/*Entity.java,
+			**/io/wkrzywiec/hexagonal/library/LibraryHexagonalApplication.java
 		</code.coverage.exclusions>
 	</properties>
 
