@@ -2,6 +2,7 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.DueDate;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDetails;
@@ -15,5 +16,7 @@ public interface BorrowingDatabase {
     Optional<AvailableBook> getAvailableBook(Long bookId);
     Optional<ActiveUser> getActiveUser(Long userId);
     ReservationDetails save(ReservedBook reservedBook);
+    void save(BorrowedBook borrowedBook);
     List<OverdueReservation> findReservationsAfter(DueDate dueDate);
+    ReservedBook getReservedBook(Long bookId);
 }

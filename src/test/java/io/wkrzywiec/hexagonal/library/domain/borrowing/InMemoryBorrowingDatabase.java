@@ -2,6 +2,7 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.DueDate;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDetails;
@@ -20,6 +21,7 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     ConcurrentHashMap<Long, ActiveUser> activeUsers = new ConcurrentHashMap<>();
     ConcurrentHashMap<Long, AvailableBook> availableBooks = new ConcurrentHashMap<>();
     ConcurrentHashMap<Long, ReservedBook> reservedBooks = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Long, BorrowedBook> borrowedBooks = new ConcurrentHashMap<>();
 
     @Override
     public void setBookAvailable(Long bookId) {
@@ -49,8 +51,14 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     public ReservationDetails save(ReservedBook reservedBook) {
         Long reservationId = new Random().nextLong();
         availableBooks.remove(reservedBook.getIdAsLong());
-        reservedBooks.put(reservationId,  reservedBook);
+        reservedBooks.put(reservationId, reservedBook);
         return new ReservationDetails(new ReservationId(reservationId), reservedBook);
+    }
+
+    @Override
+    public void save(BorrowedBook borrowedBook) {
+        reservedBooks.remove(borrowedBook.getIdAsLong());
+        borrowedBooks.put(borrowedBook.getIdAsLong(), borrowedBook);
     }
 
     @Override
@@ -64,5 +72,10 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
                             1L,
                             reservedBook.getIdAsLong()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReservedBook getReservedBook(Long bookId) {
+        return reservedBooks.get(bookId);
     }
 }

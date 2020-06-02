@@ -1,5 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing.infrastructure;
 
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.infrastructure.entity.OverdueReservationEntity;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
@@ -65,19 +66,8 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
         }
 
         List<ReservedBook> reservedBooksByUser = getReservedBooksByUser(userId);
-        return Optional.of(new ActiveUser(userId, reservedBooksByUser));
-    }
-
-    private List<ReservedBook> getReservedBooksByUser(Long userId) {
-        try {
-            return jdbcTemplate.queryForList(
-                    "SELECT book_id FROM reserved WHERE reserved.user_id = ?",
-                    ReservedBook.class,
-                    userId
-            );
-        } catch (DataAccessException exception){
-            return new ArrayList<>();
-        }
+        List<BorrowedBook> borrowedBooksByUser = getBorrowedBooksByUser(userId);
+        return Optional.of(new ActiveUser(userId, reservedBooksByUser, borrowedBooksByUser));
     }
 
     @Override
@@ -100,6 +90,11 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     @Override
+    public void save(BorrowedBook borrowedBook) {
+
+    }
+
+    @Override
     public List<OverdueReservation> findReservationsAfter(DueDate dueDate) {
         List<OverdueReservationEntity> entities = jdbcTemplate.query(
                 "SELECT id AS reservationId, book_id AS bookIdentification FROM reserved WHERE reserved_date > ?",
@@ -108,5 +103,26 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
         return entities.stream()
                 .map(entity -> new OverdueReservation(entity.getReservationId(), entity.getBookIdentification()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReservedBook getReservedBook(Long bookId) {
+        return null;
+    }
+
+    private List<ReservedBook> getReservedBooksByUser(Long userId) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT book_id FROM reserved WHERE reserved.user_id = ?",
+                    ReservedBook.class,
+                    userId
+            );
+        } catch (DataAccessException exception){
+            return new ArrayList<>();
+        }
+    }
+
+    private List<BorrowedBook> getBorrowedBooksByUser(Long userId) {
+        return new ArrayList<>();
     }
 }

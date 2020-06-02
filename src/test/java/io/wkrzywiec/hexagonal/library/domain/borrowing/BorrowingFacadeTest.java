@@ -4,6 +4,7 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.BorrowingFacade;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ActiveUserNotFoundException;
@@ -168,5 +169,23 @@ public class BorrowingFacadeTest {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    @DisplayName("Successfully borrow a book")
+    public void givenReservedBookAndActiveUser_whenBorrowing_thenBookIsBorrowed(){
+        //given
+        BorrowBookCommand borrowBookCommand = BorrowTestData.anyBorrowBookCommand(100L, 100L);
+        ReservedBook reservedBook = BorrowTestData.anyReservedBook(borrowBookCommand.getBookId(), borrowBookCommand.getUserId());
+        ActiveUser activeUser = BorrowTestData.anyActiveUser(borrowBookCommand.getUserId());
+
+        database.activeUsers.put(activeUser.getIdAsLong(), activeUser);
+        database.reservedBooks.put(reservedBook.getIdAsLong(), reservedBook);
+
+        //when
+        facade.handle(borrowBookCommand);
+
+        //then
+        assertEquals(1, activeUser.getBorrowedBookList().size());
     }
 }
