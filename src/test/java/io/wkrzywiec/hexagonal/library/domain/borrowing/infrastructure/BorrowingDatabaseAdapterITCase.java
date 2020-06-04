@@ -4,11 +4,13 @@ import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.DueDate;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +109,50 @@ public class BorrowingDatabaseAdapterITCase {
         assertEquals(bookId, reservationDetails.getReservedBook().getIdAsLong());
         assertEquals(activeUserId, reservationDetails.getReservedBook().getAssignedUserIdAsLong());
         assertTrue(reservationDetails.getReservationId().getIdAsLong() > 0);
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("Get reserved book by its id")
+    @Sql({"/book-and-user.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldFindReservedBook(){
+        //given
+        Long bookId = getHomoDeusBookId();
+        Long johnDoeUserId = getJohnDoeUserId();
+        jdbcTemplate.update(
+                "INSERT INTO public.reserved (book_id, user_id) VALUES (?, ?)",
+                bookId,
+                johnDoeUserId);
+
+        //when
+        Optional<ReservedBook> reservedBook = database.getReservedBook(bookId);
+
+        //then
+        assertTrue(reservedBook.isPresent());
+        assertEquals(bookId, reservedBook.get().getIdAsLong());
+    }
+
+    @Test
+    @DisplayName("Save borrowed book")
+    @Sql({"/book-and-user.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldSaveBorrowedBook(){
+        //given
+        Long bookId = getHomoDeusBookId();
+        Long activeUserId = getJohnDoeUserId();
+
+        BorrowedBook borrowedBook = new BorrowedBook(bookId, activeUserId);
+
+        //when
+        database.save(borrowedBook);
+
+        //then
+        Long savedBookId = jdbcTemplate.queryForObject(
+                "SELECT book_id FROM borrowed WHERE book_id = ?",
+                Long.class,
+                bookId);
+        assertEquals(bookId, savedBookId);
     }
 
     @Test

@@ -4,8 +4,9 @@ import io.restassured.RestAssured;
 import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
-import io.wkrzywiec.hexagonal.library.domain.inventory.infrastructure.BookRepository;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MakeReservationComponentTest {
+public class BorrowBookComponentTest {
 
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private BookRepository bookRepository;
+    private String baseURL;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    private String baseURL;
 
     @BeforeEach
     public void init() {
@@ -39,10 +37,11 @@ public class MakeReservationComponentTest {
     }
 
     @Test
-    @DisplayName("Reserve available book")
+    @Disabled
+    @DisplayName("Borrow reserved book")
     @Sql({"/book-and-user.sql", "/available-book.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
-    public void givenBookIsAvailable_thenMakeReservation_thenBookIsReserved() {
+    public void givenBookIsReserved_thenBorrowIt_thenBookIsBorrowed() {
         //given
         Long homoDeusBookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
@@ -54,23 +53,28 @@ public class MakeReservationComponentTest {
                 Long.class,
                 UserTestData.johnDoeEmail());
 
-        BookReservationCommand reservationCommand =
-                BookReservationCommand.builder()
-                .bookId(homoDeusBookId )
-                .userId(activeUserId)
-                .build();
+        jdbcTemplate.update(
+                "INSERT INTO public.reserved (book_id, user_id) VALUES (?, ?)",
+                homoDeusBookId,
+                activeUserId);
+
+        BorrowBookCommand borrowBookCommand =
+                BorrowBookCommand.builder()
+                        .bookId(homoDeusBookId )
+                        .userId(activeUserId)
+                        .build();
 
         //when
         given()
                 .contentType("application/json")
-                .body(reservationCommand)
-        .when()
-                .post( baseURL + "/reservations")
+                .body(borrowBookCommand)
+                .when()
+                .post( baseURL + "/borrow")
                 .prettyPeek()
-        .then();
+                .then();
 
         Long reservationId = jdbcTemplate.queryForObject(
-                "SELECT id FROM reserved WHERE book_id = ?",
+                "SELECT id FROM borrowed WHERE book_id = ?",
                 Long.class,
                 homoDeusBookId);
 
