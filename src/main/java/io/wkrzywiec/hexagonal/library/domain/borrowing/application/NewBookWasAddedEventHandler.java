@@ -4,6 +4,7 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.MakeBookAvaila
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.MakeBookAvailable;
 import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.NewBookWasAddedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NewBookWasAddedEventHandler {
 
+    @Qualifier("MakeBookAvailable")
     private final MakeBookAvailable makeBookAvailable;
 
     @EventListener

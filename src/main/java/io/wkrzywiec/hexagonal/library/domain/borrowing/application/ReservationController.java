@@ -3,6 +3,7 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing.application;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.ReserveBook;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReservationController {
 
+    @Qualifier("ReserveBook")
     private final ReserveBook reserveBook;
 
     @PostMapping("")
