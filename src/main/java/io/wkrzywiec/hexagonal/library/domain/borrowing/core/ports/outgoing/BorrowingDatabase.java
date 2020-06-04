@@ -18,5 +18,5 @@ public interface BorrowingDatabase {
     ReservationDetails save(ReservedBook reservedBook);
     void save(BorrowedBook borrowedBook);
     List<OverdueReservation> findReservationsAfter(DueDate dueDate);
-    ReservedBook getReservedBook(Long bookId);
+    Optional<ReservedBook> getReservedBook(Long bookId);
 }

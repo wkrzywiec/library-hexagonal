@@ -91,6 +91,19 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
 
     @Override
     public void save(BorrowedBook borrowedBook) {
+        jdbcTemplate.update(
+                "INSERT INTO borrowed (book_id, user_id, borrowed_date) VALUES (?, ?, ?)",
+                borrowedBook.getIdAsLong(),
+                borrowedBook.getAssignedUserIdAsLong(),
+                borrowedBook.getBorrowedDateAsInstant());
+
+        jdbcTemplate.update(
+                "DELETE FROM reserved WHERE book_id = ?",
+                borrowedBook.getIdAsLong());
+
+        jdbcTemplate.update(
+                "DELETE FROM available WHERE book_id = ?",
+                borrowedBook.getIdAsLong());
 
     }
 
@@ -106,8 +119,16 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     @Override
-    public ReservedBook getReservedBook(Long bookId) {
-        return null;
+    public Optional<ReservedBook> getReservedBook(Long bookId) {
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            "SELECT book_id AS bookId, user_id AS userId, reserved_date AS reservedDate FROM reserved WHERE reserved.book_id = ?",
+                            ReservedBook.class,
+                            bookId));
+        } catch (DataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     private List<ReservedBook> getReservedBooksByUser(Long userId) {

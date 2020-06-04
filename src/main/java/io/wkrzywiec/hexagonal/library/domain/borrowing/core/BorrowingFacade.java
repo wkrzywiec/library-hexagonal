@@ -13,6 +13,7 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDet
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.AvailableBookNotFoundExeption;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ReservedBookNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.BorrowBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.CancelOverdueReservations;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.MakeBookAvailable;
@@ -69,7 +70,9 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
         ActiveUser activeUser =
                 database.getActiveUser(borrowBookCommand.getUserId())
                         .orElseThrow(() -> new ActiveUserNotFoundException(borrowBookCommand.getUserId()));
-        ReservedBook reservedBook = database.getReservedBook(borrowBookCommand.getBookId());
+        ReservedBook reservedBook =
+                database.getReservedBook(borrowBookCommand.getBookId())
+                .orElseThrow(() -> new ReservedBookNotFoundException(borrowBookCommand.getBookId()));
 
         BorrowedBook borrowedBook = activeUser.borrow(reservedBook);
         database.save(borrowedBook);

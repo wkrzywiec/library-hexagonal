@@ -1,3 +1,4 @@
+DELETE FROM public.borrowed;
 DELETE FROM public.reserved;
 DELETE FROM public.available;
 DELETE FROM public.book_author;

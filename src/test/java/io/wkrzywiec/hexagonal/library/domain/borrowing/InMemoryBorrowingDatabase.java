@@ -75,7 +75,7 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     }
 
     @Override
-    public ReservedBook getReservedBook(Long bookId) {
-        return reservedBooks.get(bookId);
+    public Optional<ReservedBook> getReservedBook(Long bookId) {
+        return Optional.of(reservedBooks.get(bookId));
     }
 }
