@@ -12,11 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BorrowingDatabase {
-    void setBookAvailable(Long bookId);
-    Optional<AvailableBook> getAvailableBook(Long bookId);
-    Optional<ActiveUser> getActiveUser(Long userId);
+    void save(AvailableBook availableBook);
     ReservationDetails save(ReservedBook reservedBook);
     void save(BorrowedBook borrowedBook);
+    Optional<AvailableBook> getAvailableBook(Long bookId);
+    Optional<ActiveUser> getActiveUser(Long userId);
     List<OverdueReservation> findReservationsAfter(DueDate dueDate);
     Optional<ReservedBook> getReservedBook(Long bookId);
+    Optional<BorrowedBook> getBorrowedBook(Long bookId);
 }

@@ -7,15 +7,18 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservedEv
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.DueDate;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.GiveBackBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.OverdueReservation;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDetails;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ActiveUserNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.AvailableBookNotFoundExeption;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.BorrowedBookNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ReservedBookNotFoundException;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.BorrowBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.CancelOverdueReservations;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.GiveBackBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.MakeBookAvailable;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.ReserveBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingDatabase;
@@ -24,9 +27,8 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.Borro
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
-public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOverdueReservations, BorrowBook {
+public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOverdueReservations, BorrowBook, GiveBackBook {
 
     private final BorrowingDatabase database;
     private final BorrowingEventPublisher eventPublisher;
@@ -38,7 +40,7 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
 
     @Override
     public void handle(MakeBookAvailableCommand bookAvailableCommand) {
-        database.setBookAvailable(bookAvailableCommand.getBookId());
+        database.save(new AvailableBook(bookAvailableCommand.getBookId()));
     }
 
     @Override
@@ -62,7 +64,7 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
         DueDate dueDate = new DueDate(Instant.now().plus(3L, ChronoUnit.DAYS));
         List<OverdueReservation> overdueReservationList = database.findReservationsAfter(dueDate);
         overdueReservationList.forEach(
-                overdue -> database.setBookAvailable(overdue.getBookIdentificationAsLong()));
+                overdue -> database.save(new AvailableBook(overdue.getBookIdentificationAsLong())));
     }
 
     @Override
@@ -76,5 +78,15 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
 
         BorrowedBook borrowedBook = activeUser.borrow(reservedBook);
         database.save(borrowedBook);
+    }
+
+    @Override
+    public void handle(GiveBackBookCommand command) {
+        BorrowedBook borrowedBook =
+                database.getBorrowedBook(command.getBookId())
+                .orElseThrow(() -> new BorrowedBookNotFoundException(command.getBookId()));
+
+        AvailableBook availableBook = borrowedBook.giveBack();
+        database.save(availableBook);
     }
 }

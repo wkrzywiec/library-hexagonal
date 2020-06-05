@@ -29,4 +29,8 @@ public class BorrowedBook implements Book {
     public Instant getBorrowedDateAsInstant(){
         return borrowedDate;
     }
+
+    public AvailableBook giveBack() {
+        return new AvailableBook(bookId);
+    }
 }

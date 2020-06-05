@@ -48,7 +48,7 @@ public class BorrowingDatabaseAdapterITCase {
         Long bookId = getHomoDeusBookId();
 
         //when
-        database.setBookAvailable(bookId);
+        database.save(new AvailableBook(bookId));
 
         //then
         Long savedBookId = jdbcTemplate.queryForObject(
