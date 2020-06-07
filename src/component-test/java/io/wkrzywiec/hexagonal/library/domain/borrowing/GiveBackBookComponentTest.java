@@ -3,21 +3,21 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing;
 import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
-import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.GiveBackBookCommand;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-public class BorrowBookComponentTest extends BaseComponentTest {
+public class GiveBackBookComponentTest extends BaseComponentTest {
 
     @Test
     @Disabled
-    @DisplayName("Borrow reserved book")
+    @DisplayName("Give back borrowed book")
     @Sql({"/book-and-user.sql", "/available-book.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookIsReserved_thenBorrowIt_thenBookIsBorrowed() {
@@ -33,12 +33,12 @@ public class BorrowBookComponentTest extends BaseComponentTest {
                 UserTestData.johnDoeEmail());
 
         jdbcTemplate.update(
-                "INSERT INTO public.reserved (book_id, user_id) VALUES (?, ?)",
+                "INSERT INTO public.borrowed (book_id, user_id) VALUES (?, ?)",
                 homoDeusBookId,
                 activeUserId);
 
-        BorrowBookCommand borrowBookCommand =
-                BorrowBookCommand.builder()
+        GiveBackBookCommand giveBackBookCommand =
+                GiveBackBookCommand.builder()
                         .bookId(homoDeusBookId )
                         .userId(activeUserId)
                         .build();
@@ -46,17 +46,17 @@ public class BorrowBookComponentTest extends BaseComponentTest {
         //when
         given()
                 .contentType("application/json")
-                .body(borrowBookCommand)
+                .body(giveBackBookCommand)
                 .when()
-                .post( baseURL + "/borrow")
+                .post( baseURL + "/giveBack")
                 .prettyPeek()
                 .then();
 
-        Long borrowId = jdbcTemplate.queryForObject(
-                "SELECT id FROM borrowed WHERE book_id = ?",
+        Long bookId = jdbcTemplate.queryForObject(
+                "SELECT book_id FROM available WHERE book_id = ?",
                 Long.class,
                 homoDeusBookId);
 
-        assertTrue(borrowId > 0);
+        assertEquals(homoDeusBookId, bookId);
     }
 }

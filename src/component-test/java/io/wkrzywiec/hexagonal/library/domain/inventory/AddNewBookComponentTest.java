@@ -1,17 +1,12 @@
 package io.wkrzywiec.hexagonal.library.domain.inventory;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.wkrzywiec.hexagonal.library.BookTestData;
+import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
 import io.wkrzywiec.hexagonal.library.domain.inventory.core.model.AddNewBookCommand;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
@@ -19,22 +14,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AddNewBookComponentTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private JdbcTemplate jdbc;
-
-    private String baseURL;
-
-    @BeforeEach
-    public void init(){
-        this.baseURL = "http://localhost:" + port;
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+public class AddNewBookComponentTest extends BaseComponentTest {
 
     @Test
     @DisplayName("Search for a new book in Google Books")
@@ -73,14 +53,14 @@ public class AddNewBookComponentTest {
         .then();
 
         //then
-        Long savedBookId = jdbc.queryForObject(
+        Long savedBookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE book_external_id = ?",
                 Long.class,
                 BookTestData.homoDeusBookGoogleId());
 
         assertTrue(savedBookId > 0);
 
-        Long availableBookId = jdbc.queryForObject(
+        Long availableBookId = jdbcTemplate.queryForObject(
                 "SELECT id FROM available WHERE book_id = ?",
                 Long.class,
                 savedBookId);

@@ -3,6 +3,7 @@ package io.wkrzywiec.hexagonal.library.infrastructure;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.BorrowingFacade;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.BorrowBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.CancelOverdueReservations;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.GiveBackBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.MakeBookAvailable;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.ReserveBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingDatabase;
@@ -12,7 +13,6 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.infrastructure.SpringBorr
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class BorrowingDomainConfig {
@@ -42,6 +42,12 @@ public class BorrowingDomainConfig {
     @Bean
     @Qualifier("BorrowBook")
     public BorrowBook borrowBook(BorrowingDatabase database, BorrowingEventPublisher borrowingEventPublisher){
+        return new BorrowingFacade(database, borrowingEventPublisher);
+    }
+
+    @Bean
+    @Qualifier("GiveBackBook")
+    public GiveBackBook giveBackBook(BorrowingDatabase database, BorrowingEventPublisher borrowingEventPublisher){
         return new BorrowingFacade(database, borrowingEventPublisher);
     }
 

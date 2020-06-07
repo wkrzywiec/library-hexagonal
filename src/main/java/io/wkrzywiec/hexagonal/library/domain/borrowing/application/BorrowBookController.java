@@ -22,6 +22,6 @@ public class BorrowBookController {
     @PostMapping("")
     public ResponseEntity<String> borrowBook(@RequestBody BorrowBookCommand borrowBookCommand){
         borrowBook.handle(borrowBookCommand);
-        return new ResponseEntity<>("Book with an id " + borrowBookCommand.getBookId() + " was borrowed", HttpStatus.CREATED);
+        return new ResponseEntity<>("Book with an id " + borrowBookCommand.getBookId() + " was borrowed", HttpStatus.OK);
     }
 }

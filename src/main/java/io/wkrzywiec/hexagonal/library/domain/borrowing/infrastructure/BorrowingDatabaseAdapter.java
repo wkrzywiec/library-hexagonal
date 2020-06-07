@@ -133,7 +133,15 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
 
     @Override
     public Optional<BorrowedBook> getBorrowedBook(Long bookId) {
-        return Optional.empty();
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            "SELECT book_id, user_id, borrowed_date FROM borrowed WHERE book_id = ?",
+                            new BeanPropertyRowMapper<BorrowedBook>(BorrowedBook.class),
+                            bookId));
+        } catch (DataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     private List<ReservedBook> getReservedBooksByUser(Long userId) {

@@ -7,10 +7,10 @@ import java.time.Instant;
 @EqualsAndHashCode
 public class BorrowedBook implements Book {
 
-    private final Long bookId;
-    private final Long userId;
+    private Long bookId;
+    private Long userId;
     @EqualsAndHashCode.Exclude
-    private final Instant borrowedDate;
+    private Instant borrowedDate;
 
     public BorrowedBook(Long bookId, Long userId) {
         this.bookId = bookId;

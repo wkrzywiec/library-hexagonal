@@ -22,6 +22,6 @@ public class ReservationController {
     @PostMapping("")
     public ResponseEntity<String> makeReservation(@RequestBody BookReservationCommand reservationCommand){
         Long reservationId = reserveBook.handle(reservationCommand);
-        return new ResponseEntity<>("Reservation has been made with an id " + reservationId, HttpStatus.CREATED);
+        return new ResponseEntity<>("Reservation has been made with an id " + reservationId, HttpStatus.OK);
     }
 }

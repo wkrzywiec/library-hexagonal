@@ -1,42 +1,23 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
-import io.restassured.RestAssured;
 import io.wkrzywiec.hexagonal.library.BookTestData;
 import io.wkrzywiec.hexagonal.library.UserTestData;
+import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.domain.inventory.infrastructure.BookRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MakeReservationComponentTest {
-
-    @LocalServerPort
-    private int port;
+public class MakeReservationComponentTest extends BaseComponentTest {
 
     @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    private String baseURL;
-
-    @BeforeEach
-    public void init() {
-        this.baseURL = "http://localhost:" + port;
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
 
     @Test
     @DisplayName("Reserve available book")
