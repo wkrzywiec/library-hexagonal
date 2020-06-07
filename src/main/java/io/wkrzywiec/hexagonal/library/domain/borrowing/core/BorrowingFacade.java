@@ -85,8 +85,11 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
         BorrowedBook borrowedBook =
                 database.getBorrowedBook(command.getBookId())
                 .orElseThrow(() -> new BorrowedBookNotFoundException(command.getBookId()));
+        ActiveUser activeUser =
+                database.getActiveUser(command.getUserId())
+                        .orElseThrow(() -> new ActiveUserNotFoundException(command.getUserId()));
 
-        AvailableBook availableBook = borrowedBook.giveBack();
+        AvailableBook availableBook = activeUser.giveBack(borrowedBook);
         database.save(availableBook);
     }
 }

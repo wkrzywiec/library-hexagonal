@@ -5,6 +5,8 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ActiveUser;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.AvailableBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.GiveBackBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.ActiveUserNotFoundException;
@@ -18,6 +20,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -187,5 +192,25 @@ public class BorrowingFacadeTest {
 
         //then
         assertEquals(1, activeUser.getBorrowedBookList().size());
+    }
+
+    @Test
+    @DisplayName("Successful give back a book")
+    public void givenUserWithBorrowedBook_whenBookIsReturned_thenBookIsAvailable(){
+        //given
+        GiveBackBookCommand giveBackBookCommand = BorrowTestData.anyGiveBookCommand(100L, 100L);
+        BorrowedBook borrowedBook = BorrowTestData.anyBorrowedBook(giveBackBookCommand.getBookId(), giveBackBookCommand.getUserId());
+        ActiveUser activeUser = BorrowTestData.anyActiveUserWithBorrowedBooks(giveBackBookCommand.getUserId(), new ArrayList<BorrowedBook>(Arrays.asList(borrowedBook)));
+
+        database.borrowedBooks.put(borrowedBook.getIdAsLong(), borrowedBook);
+        database.activeUsers.put(activeUser.getIdAsLong(), activeUser);
+
+        //when
+        facade.handle(giveBackBookCommand);
+
+        //then
+        assertEquals(0, database.borrowedBooks.size());
+        assertEquals(1, database.availableBooks.size());
+        assertEquals(0, database.activeUsers.get(activeUser.getIdAsLong()).getBorrowedBookList().size());
     }
 }

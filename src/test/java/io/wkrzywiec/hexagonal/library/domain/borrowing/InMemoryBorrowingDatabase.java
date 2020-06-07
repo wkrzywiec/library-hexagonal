@@ -27,7 +27,7 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     public void save(AvailableBook availableBook) {
         availableBooks.put(availableBook.getIdAsLong(), availableBook);
         reservedBooks.remove(availableBook.getIdAsLong());
-       borrowedBooks.remove(availableBook.getIdAsLong());
+        borrowedBooks.remove(availableBook.getIdAsLong());
     }
 
     @Override
@@ -82,6 +82,6 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
 
     @Override
     public Optional<BorrowedBook> getBorrowedBook(Long bookId) {
-        return Optional.empty();
+        return Optional.of(borrowedBooks.get(bookId));
     }
 }

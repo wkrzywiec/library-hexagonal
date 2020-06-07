@@ -9,6 +9,7 @@ public class BorrowedBook implements Book {
 
     private final Long bookId;
     private final Long userId;
+    @EqualsAndHashCode.Exclude
     private final Instant borrowedDate;
 
     public BorrowedBook(Long bookId, Long userId) {
@@ -28,9 +29,5 @@ public class BorrowedBook implements Book {
 
     public Instant getBorrowedDateAsInstant(){
         return borrowedDate;
-    }
-
-    public AvailableBook giveBack() {
-        return new AvailableBook(bookId);
     }
 }
