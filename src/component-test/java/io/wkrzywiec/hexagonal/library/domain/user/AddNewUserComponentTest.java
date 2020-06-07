@@ -1,36 +1,16 @@
 package io.wkrzywiec.hexagonal.library.domain.user;
 
-import io.restassured.RestAssured;
+import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
 import io.wkrzywiec.hexagonal.library.domain.user.core.model.AddUserCommand;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AddNewUserComponentTest {
-
-    @LocalServerPort
-    private int port;
-
-    private String baseURL;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @BeforeEach
-    public void init(){
-        baseURL = "http://localhost:" + port;
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+public class AddNewUserComponentTest extends BaseComponentTest {
 
     @Test
     @DisplayName("Create new user")

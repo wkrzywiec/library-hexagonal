@@ -10,6 +10,8 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationDet
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingDatabase;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.infrastructure.mapper.BorrowedBookRowMapper;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.infrastructure.mapper.ReservedBookRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -27,18 +29,18 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void setBookAvailable(Long bookId) {
+    public void save(AvailableBook availableBook) {
         jdbcTemplate.update(
                 "INSERT INTO available (book_id) VALUES (?)",
-                bookId);
+                availableBook.getIdAsLong());
 
         jdbcTemplate.update(
                 "DELETE FROM reserved WHERE book_id = ?",
-                bookId);
+                availableBook.getIdAsLong());
 
         jdbcTemplate.update(
                 "DELETE FROM borrowed WHERE book_id = ?",
-                bookId);
+                availableBook.getIdAsLong());
     }
 
     @Override
@@ -124,7 +126,20 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
             return Optional.ofNullable(
                     jdbcTemplate.queryForObject(
                             "SELECT book_id AS bookId, user_id AS userId, reserved_date AS reservedDate FROM reserved WHERE reserved.book_id = ?",
-                            ReservedBook.class,
+                            new ReservedBookRowMapper(),
+                            bookId));
+        } catch (DataAccessException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<BorrowedBook> getBorrowedBook(Long bookId) {
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            "SELECT book_id, user_id, borrowed_date FROM borrowed WHERE book_id = ?",
+                            new BorrowedBookRowMapper(),
                             bookId));
         } catch (DataAccessException exception) {
             return Optional.empty();

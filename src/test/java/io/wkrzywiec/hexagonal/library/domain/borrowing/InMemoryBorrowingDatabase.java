@@ -24,9 +24,10 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     ConcurrentHashMap<Long, BorrowedBook> borrowedBooks = new ConcurrentHashMap<>();
 
     @Override
-    public void setBookAvailable(Long bookId) {
-        availableBooks.put(bookId, new AvailableBook(bookId));
-        reservedBooks.remove(bookId);
+    public void save(AvailableBook availableBook) {
+        availableBooks.put(availableBook.getIdAsLong(), availableBook);
+        reservedBooks.remove(availableBook.getIdAsLong());
+        borrowedBooks.remove(availableBook.getIdAsLong());
     }
 
     @Override
@@ -77,5 +78,10 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     @Override
     public Optional<ReservedBook> getReservedBook(Long bookId) {
         return Optional.of(reservedBooks.get(bookId));
+    }
+
+    @Override
+    public Optional<BorrowedBook> getBorrowedBook(Long bookId) {
+        return Optional.of(borrowedBooks.get(bookId));
     }
 }

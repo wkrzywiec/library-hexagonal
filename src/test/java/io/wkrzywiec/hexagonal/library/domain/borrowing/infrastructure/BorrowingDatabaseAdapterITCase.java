@@ -45,10 +45,10 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveAvailableBook(){
         //given
-        Long bookId = getHomoDeusBookId();
+        Long bookId = getHomoDeusBookIdFromDb();
 
         //when
-        database.setBookAvailable(bookId);
+        database.save(new AvailableBook(bookId));
 
         //then
         Long savedBookId = jdbcTemplate.queryForObject(
@@ -64,7 +64,7 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetAvailableBook(){
         //given
-        Long bookId = getHomoDeusBookId();
+        Long bookId = getHomoDeusBookIdFromDb();
 
         //when
         Optional<AvailableBook> availableBookOptional = database.getAvailableBook(bookId);
@@ -80,7 +80,7 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldGetActiveUser() {
         //given
-        Long activeUserId = getJohnDoeUserId();
+        Long activeUserId = getJohnDoeUserIdFromDb();
 
         //when
         Optional<ActiveUser> activeUserOptional = database.getActiveUser(activeUserId);
@@ -96,9 +96,9 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveReservedBook(){
         //given
-        Long bookId = getHomoDeusBookId();
+        Long bookId = getHomoDeusBookIdFromDb();
 
-        Long activeUserId = getJohnDoeUserId();
+        Long activeUserId = getJohnDoeUserIdFromDb();
 
         ReservedBook reservedBook = new ReservedBook(bookId, activeUserId);
 
@@ -112,14 +112,13 @@ public class BorrowingDatabaseAdapterITCase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Get reserved book by its id")
     @Sql({"/book-and-user.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldFindReservedBook(){
         //given
-        Long bookId = getHomoDeusBookId();
-        Long johnDoeUserId = getJohnDoeUserId();
+        Long bookId = getHomoDeusBookIdFromDb();
+        Long johnDoeUserId = getJohnDoeUserIdFromDb();
         jdbcTemplate.update(
                 "INSERT INTO public.reserved (book_id, user_id) VALUES (?, ?)",
                 bookId,
@@ -139,8 +138,8 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldSaveBorrowedBook(){
         //given
-        Long bookId = getHomoDeusBookId();
-        Long activeUserId = getJohnDoeUserId();
+        Long bookId = getHomoDeusBookIdFromDb();
+        Long activeUserId = getJohnDoeUserIdFromDb();
 
         BorrowedBook borrowedBook = new BorrowedBook(bookId, activeUserId);
 
@@ -162,13 +161,13 @@ public class BorrowingDatabaseAdapterITCase {
     public void shouldFindOverdueReservations(){
         //given
         DueDate thirdDayAfterReservation = new DueDate(Instant.now().plus(3, ChronoUnit.DAYS));
-        Long overdueBookId = getHomoDeusBookId();
-        Long johnDoeUserId = getJohnDoeUserId();
+        Long overdueBookId = getHomoDeusBookIdFromDb();
+        Long johnDoeUserId = getJohnDoeUserIdFromDb();
         jdbcTemplate.update(
                 "INSERT INTO public.reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
                 overdueBookId,
                 johnDoeUserId,
-                Instant.now().plus(3, ChronoUnit.DAYS));
+                Instant.now().plus(4, ChronoUnit.DAYS));
 
         //when
         OverdueReservation overdueReservation = database.findReservationsAfter(thirdDayAfterReservation).get(0);
@@ -177,14 +176,38 @@ public class BorrowingDatabaseAdapterITCase {
         assertEquals(overdueBookId, overdueReservation.getBookIdentificationAsLong());
     }
 
-    private Long getHomoDeusBookId(){
+    @Test
+    @DisplayName("Find borrowed book by id")
+    @Sql({"/book-and-user.sql"})
+    @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldFindBorrowedBook(){
+        //given
+        Long bookId = getHomoDeusBookIdFromDb();
+        Long johnDoeUserId = getJohnDoeUserIdFromDb();
+        jdbcTemplate.update(
+                "INSERT INTO public.borrowed (book_id, user_id, borrowed_date) VALUES (?, ?, ?)",
+                bookId,
+                johnDoeUserId,
+                Instant.now());
+
+        Long id = jdbcTemplate.queryForObject("SELECT book_id FROM borrowed WHERE book_id = ?", Long.class, bookId);
+
+        //when
+        Optional<BorrowedBook> borrowedBook = database.getBorrowedBook(bookId);
+
+        //then
+        assertTrue(borrowedBook.isPresent());
+        assertEquals(bookId, borrowedBook.get().getIdAsLong());
+    }
+
+    private Long getHomoDeusBookIdFromDb(){
         return jdbcTemplate.queryForObject(
                 "SELECT id FROM book WHERE title = ?",
                 Long.class,
                 BookTestData.homoDeusBookTitle());
     }
 
-    private Long getJohnDoeUserId(){
+    private Long getJohnDoeUserIdFromDb(){
         return jdbcTemplate.queryForObject(
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
