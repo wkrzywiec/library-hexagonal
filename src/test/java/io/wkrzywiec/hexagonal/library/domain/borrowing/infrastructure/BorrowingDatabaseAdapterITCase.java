@@ -112,7 +112,6 @@ public class BorrowingDatabaseAdapterITCase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Get reserved book by its id")
     @Sql({"/book-and-user.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
@@ -168,7 +167,7 @@ public class BorrowingDatabaseAdapterITCase {
                 "INSERT INTO public.reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
                 overdueBookId,
                 johnDoeUserId,
-                Instant.now().plus(3, ChronoUnit.DAYS));
+                Instant.now().plus(4, ChronoUnit.DAYS));
 
         //when
         OverdueReservation overdueReservation = database.findReservationsAfter(thirdDayAfterReservation).get(0);
@@ -178,7 +177,6 @@ public class BorrowingDatabaseAdapterITCase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Find borrowed book by id")
     @Sql({"/book-and-user.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)

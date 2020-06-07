@@ -17,6 +17,12 @@ public class ReservedBook implements Book {
         this.reservedDate = Instant.now();
     }
 
+    public ReservedBook(Long bookId, Long userId, Instant reservedDate) {
+        this.bookId = bookId;
+        this.userId = userId;
+        this.reservedDate = reservedDate;
+    }
+
     @Override
     public Long getIdAsLong() {
         return bookId;

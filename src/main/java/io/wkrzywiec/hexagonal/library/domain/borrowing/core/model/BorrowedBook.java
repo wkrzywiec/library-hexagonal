@@ -18,6 +18,12 @@ public class BorrowedBook implements Book {
         this.borrowedDate = Instant.now();
     }
 
+    public BorrowedBook(Long bookId, Long userId, Instant borrowedDate) {
+        this.bookId = bookId;
+        this.userId = userId;
+        this.borrowedDate = borrowedDate;
+    }
+
     @Override
     public Long getIdAsLong() {
         return bookId;
