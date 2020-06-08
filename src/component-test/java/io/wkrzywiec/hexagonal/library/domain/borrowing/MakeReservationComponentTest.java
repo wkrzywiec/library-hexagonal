@@ -1,7 +1,5 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
-import io.wkrzywiec.hexagonal.library.BookTestData;
-import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservationCommand;
 import io.wkrzywiec.hexagonal.library.domain.inventory.infrastructure.BookRepository;
@@ -25,15 +23,8 @@ public class MakeReservationComponentTest extends BaseComponentTest {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookIsAvailable_thenMakeReservation_thenBookIsReserved() {
         //given
-        Long homoDeusBookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
-
-        Long activeUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long homoDeusBookId = databaseHelper.getHomoDeusBookId();
+        Long activeUserId = databaseHelper.getJohnDoeUserId();
 
         BookReservationCommand reservationCommand =
                 BookReservationCommand.builder()
@@ -50,11 +41,7 @@ public class MakeReservationComponentTest extends BaseComponentTest {
                 .prettyPeek()
         .then();
 
-        Long reservationId = jdbcTemplate.queryForObject(
-                "SELECT id FROM reserved WHERE book_id = ?",
-                Long.class,
-                homoDeusBookId);
-
+        Long reservationId = databaseHelper.getPrimaryKeyOfReservationByBookId(homoDeusBookId);
         assertTrue(reservationId > 0);
     }
 }

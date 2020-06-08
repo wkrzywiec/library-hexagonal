@@ -53,17 +53,10 @@ public class AddNewBookComponentTest extends BaseComponentTest {
         .then();
 
         //then
-        Long savedBookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE book_external_id = ?",
-                Long.class,
-                BookTestData.homoDeusBookGoogleId());
-
+        Long savedBookId = databaseHelper.getHomoDeusBookId();
         assertTrue(savedBookId > 0);
 
-        Long availableBookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM available WHERE book_id = ?",
-                Long.class,
-                savedBookId);
+        Long availableBookId = databaseHelper.getPrimaryKeyOfAvailableByBookBy(savedBookId);
 
         assertTrue(availableBookId > 0);
     }

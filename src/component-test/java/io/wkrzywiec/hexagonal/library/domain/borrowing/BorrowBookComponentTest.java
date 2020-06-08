@@ -1,7 +1,5 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
-import io.wkrzywiec.hexagonal.library.BookTestData;
-import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import org.junit.jupiter.api.DisplayName;
@@ -20,15 +18,8 @@ public class BorrowBookComponentTest extends BaseComponentTest {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookIsReserved_thenBorrowIt_thenBookIsBorrowed() {
         //given
-        Long homoDeusBookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
-
-        Long activeUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long homoDeusBookId = databaseHelper.getHomoDeusBookId();
+        Long activeUserId = databaseHelper.getJohnDoeUserId();
 
         BorrowBookCommand borrowBookCommand =
                 BorrowBookCommand.builder()
@@ -45,11 +36,7 @@ public class BorrowBookComponentTest extends BaseComponentTest {
                 .prettyPeek()
                 .then();
 
-        Long borrowId = jdbcTemplate.queryForObject(
-                "SELECT id FROM borrowed WHERE book_id = ?",
-                Long.class,
-                homoDeusBookId);
-
+        Long borrowId = databaseHelper.getPrimaryKeyOfBorrowedByBookId(homoDeusBookId);
         assertTrue(borrowId > 0);
     }
 }

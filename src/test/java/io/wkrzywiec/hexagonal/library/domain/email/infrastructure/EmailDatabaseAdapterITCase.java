@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.domain.email.infrastructure;
 
 import io.wkrzywiec.hexagonal.library.BookTestData;
+import io.wkrzywiec.hexagonal.library.DatabaseHelper;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,12 +21,13 @@ public class EmailDatabaseAdapterITCase {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    private DatabaseHelper databaseHelper;
     private EmailDatabaseAdapter emailDatabase;
 
     @BeforeEach
     public void init(){
         emailDatabase = new EmailDatabaseAdapter(jdbcTemplate);
+        databaseHelper = new DatabaseHelper(jdbcTemplate);
     }
 
     @Test
@@ -34,10 +36,7 @@ public class EmailDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookId_whenGetBookTitle_thenGetBookTitle() {
         //given
-        Long bookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
+        Long bookId = databaseHelper.getHomoDeusBookId();
 
         //when
         Optional<String> bookTitle = emailDatabase.getTitleByBookId(bookId);
@@ -52,10 +51,7 @@ public class EmailDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenWrongBookId_whenGetBookTitle_thenGetEmptyResult() {
         //given
-        Long bookId = jdbcTemplate.queryForObject(
-                "SELECT id FROM book WHERE title = ?",
-                Long.class,
-                BookTestData.homoDeusBookTitle());
+        Long bookId = databaseHelper.getHomoDeusBookId();
 
         //when
         Optional<String> bookTitle = emailDatabase.getTitleByBookId(bookId + 1124);
@@ -70,10 +66,7 @@ public class EmailDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenUserId_whenGetEmail_thenGetEmailAddress() {
         //given
-        Long userId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long userId = databaseHelper.getJohnDoeUserId();
 
         //when
         Optional<String> emailAddress = emailDatabase.getUserEmailAddress(userId);
@@ -88,10 +81,7 @@ public class EmailDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenWrongUserId_whenGetEmail_thenGetEmptyResult() {
         //given
-        Long userId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long userId = databaseHelper.getJohnDoeUserId();
 
         //when
         Optional<String> emailAddress = emailDatabase.getUserEmailAddress(userId + 1124);

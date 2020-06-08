@@ -33,11 +33,7 @@ public class AddNewUserComponentTest extends BaseComponentTest {
         .then();
 
         //then
-        Long savedUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                "john.doe@test.com");
-
+        Long savedUserId = databaseHelper.getJohnDoeUserId();
         assertTrue(savedUserId > 0);
     }
 
