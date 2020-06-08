@@ -60,7 +60,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     public Optional<ActiveUser> getActiveUser(Long userId) {
         try {
             jdbcTemplate.queryForObject(
-                            "SELECT id FROM public.user as u WHERE u.id = ?",
+                            "SELECT id FROM public.library_user as u WHERE u.id = ?",
                             Long.class,
                             userId);
         } catch (DataAccessException exception) {
@@ -78,7 +78,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                "INSERT INTO reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
                reservedBook.getIdAsLong(),
                reservedBook.getAssignedUserIdAsLong(),
-               reservedBook.getReservedDateAsInstant());
+               Timestamp.from(reservedBook.getReservedDateAsInstant()));
 
         jdbcTemplate.update(
                 "DELETE FROM available WHERE book_id = ?",
@@ -97,7 +97,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                 "INSERT INTO borrowed (book_id, user_id, borrowed_date) VALUES (?, ?, ?)",
                 borrowedBook.getIdAsLong(),
                 borrowedBook.getAssignedUserIdAsLong(),
-                borrowedBook.getBorrowedDateAsInstant());
+                Timestamp.from(borrowedBook.getBorrowedDateAsInstant()));
 
         jdbcTemplate.update(
                 "DELETE FROM reserved WHERE book_id = ?",

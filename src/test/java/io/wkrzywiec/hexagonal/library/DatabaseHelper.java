@@ -17,7 +17,7 @@ public class DatabaseHelper {
 
     public Long getJohnDoeUserId(){
         return jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
+                "SELECT id FROM library_user WHERE email = ?",
                 Long.class,
                 UserTestData.johnDoeEmail());
     }

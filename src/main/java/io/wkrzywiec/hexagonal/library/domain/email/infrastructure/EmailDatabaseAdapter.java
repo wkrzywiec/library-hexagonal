@@ -28,7 +28,7 @@ public class EmailDatabaseAdapter implements EmailDatabase {
     public Optional<String> getUserEmailAddress(Long userId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT email FROM user WHERE id = ?",
+                    "SELECT email FROM library_user WHERE id = ?",
                     String.class,
                     userId));
         } catch (DataAccessException ex){
