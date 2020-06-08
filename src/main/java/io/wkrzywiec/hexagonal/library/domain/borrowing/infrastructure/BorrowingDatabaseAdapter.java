@@ -60,7 +60,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     public Optional<ActiveUser> getActiveUser(Long userId) {
         try {
             jdbcTemplate.queryForObject(
-                            "SELECT id FROM public.user as u WHERE u.id = ?",
+                            "SELECT id FROM public.library_user as u WHERE u.id = ?",
                             Long.class,
                             userId);
         } catch (DataAccessException exception) {
@@ -78,7 +78,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                "INSERT INTO reserved (book_id, user_id, reserved_date) VALUES (?, ?, ?)",
                reservedBook.getIdAsLong(),
                reservedBook.getAssignedUserIdAsLong(),
-               reservedBook.getReservedDateAsInstant());
+               Timestamp.from(reservedBook.getReservedDateAsInstant()));
 
         jdbcTemplate.update(
                 "DELETE FROM available WHERE book_id = ?",
@@ -97,7 +97,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
                 "INSERT INTO borrowed (book_id, user_id, borrowed_date) VALUES (?, ?, ?)",
                 borrowedBook.getIdAsLong(),
                 borrowedBook.getAssignedUserIdAsLong(),
-                borrowedBook.getBorrowedDateAsInstant());
+                Timestamp.from(borrowedBook.getBorrowedDateAsInstant()));
 
         jdbcTemplate.update(
                 "DELETE FROM reserved WHERE book_id = ?",
@@ -125,7 +125,7 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
         try {
             return Optional.ofNullable(
                     jdbcTemplate.queryForObject(
-                            "SELECT book_id AS bookId, user_id AS userId, reserved_date AS reservedDate FROM reserved WHERE reserved.book_id = ?",
+                            "SELECT book_id, user_id, reserved_date FROM reserved WHERE book_id = ?",
                             new ReservedBookRowMapper(),
                             bookId));
         } catch (DataAccessException exception) {
@@ -148,9 +148,9 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
 
     private List<ReservedBook> getReservedBooksByUser(Long userId) {
         try {
-            return jdbcTemplate.queryForList(
-                    "SELECT book_id FROM reserved WHERE reserved.user_id = ?",
-                    ReservedBook.class,
+            return jdbcTemplate.query(
+                    "SELECT book_id, user_id, reserved_date FROM reserved WHERE user_id = ?",
+                    new ReservedBookRowMapper(),
                     userId
             );
         } catch (DataAccessException exception){
@@ -159,6 +159,14 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     private List<BorrowedBook> getBorrowedBooksByUser(Long userId) {
-        return new ArrayList<>();
+        try {
+            return jdbcTemplate.query(
+                    "SELECT book_id, user_id, borrowed_date FROM borrowed WHERE user_id = ?",
+                    new BorrowedBookRowMapper(),
+                    userId
+            );
+        } catch (DataAccessException exception){
+            return new ArrayList<>();
+        }
     }
 }

@@ -19,14 +19,23 @@ In the terminal run the following command:
 $ docker-compose up
 ``` 
 
-#### Using Maven
+#### Using Maven (with H2 or local Postgres database)
 
-First make sure that you adjust the configuration file - `src/main/resources/application.yml` with connection details to your database.  
+First compile an application:
 
-Then, in the terminal run the following command:
 ```console
 $ mvn clean package
-$ mvn spring-boot:run
+```
+
+Then, you have two options either run it with H2 database or with local Postgres database. For first approach just run:
+
+```console
+$ mvn spring-boot:run 
+```
+
+For a second option, check in the configuration file - `src/main/resources/application.yml` for profile *local-postgres* if connection details are correct and if so, run the command:
+```console
+$ mvn spring-boot:run -P local-postgres
 ```
 
 #### Inside IntelliJ (with H2 or Postgres database)

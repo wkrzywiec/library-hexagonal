@@ -1,5 +1,6 @@
 package io.wkrzywiec.hexagonal.library.domain.user.infrastructure;
 
+import io.wkrzywiec.hexagonal.library.DatabaseHelper;
 import io.wkrzywiec.hexagonal.library.UserTestData;
 import io.wkrzywiec.hexagonal.library.domain.user.core.model.EmailAddress;
 import io.wkrzywiec.hexagonal.library.domain.user.core.model.User;
@@ -20,6 +21,7 @@ public class UserDatabaseAdapterITCase {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private DatabaseHelper databaseHelper;
 
     @Autowired
     private UserRepository userRepository;
@@ -29,6 +31,7 @@ public class UserDatabaseAdapterITCase {
     @BeforeEach
     public void init(){
         userDatabase = new UserDatabaseAdapter(userRepository);
+        databaseHelper = new DatabaseHelper(jdbcTemplate);
     }
 
     @Test
@@ -45,10 +48,7 @@ public class UserDatabaseAdapterITCase {
         UserIdentifier userIdentifier = userDatabase.save(user);
 
         //then
-        Long savedUserId = jdbcTemplate.queryForObject(
-                "SELECT id FROM user WHERE email = ?",
-                Long.class,
-                UserTestData.johnDoeEmail());
+        Long savedUserId = databaseHelper.getJohnDoeUserId();
 
         assertEquals(userIdentifier.getAsLong(), savedUserId);
     }

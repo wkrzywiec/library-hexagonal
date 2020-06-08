@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: library
-  datasource:
-    url: jdbc:postgresql://localhost:5432/library
-    driverClassName: org.postgresql.Driver
-    username: library
-    password: library
-    jpa.database-platform: org.hibernate.dialect.PostgreSQL9Dialect
