@@ -1,6 +1,8 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing;
 
 import io.wkrzywiec.hexagonal.library.domain.BaseComponentTest;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.application.model.BookStatus;
+import io.wkrzywiec.hexagonal.library.domain.borrowing.application.model.ChangeBookStatusRequest;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,18 +23,18 @@ public class BorrowBookComponentTest extends BaseComponentTest {
         Long homoDeusBookId = databaseHelper.getHomoDeusBookId();
         Long activeUserId = databaseHelper.getJohnDoeUserId();
 
-        BorrowBookCommand borrowBookCommand =
-                BorrowBookCommand.builder()
-                        .bookId(homoDeusBookId )
-                        .userId(activeUserId)
-                        .build();
+        ChangeBookStatusRequest borrowRequest =
+                ChangeBookStatusRequest.builder()
+                .userId(activeUserId)
+                .status(BookStatus.BORROWED)
+                .build();
 
         //when
         given()
                 .contentType("application/json")
-                .body(borrowBookCommand)
+                .body(borrowRequest)
                 .when()
-                .post( baseURL + "/borrow")
+                .patch( baseURL + "/books/" + homoDeusBookId + "/status")
                 .prettyPeek()
                 .then();
 
