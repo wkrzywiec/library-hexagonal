@@ -16,7 +16,7 @@ public class GiveBackBookComponentTest extends BaseComponentTest {
 
     @Test
     @DisplayName("Give back borrowed book")
-    @Sql({"/book-and-user.sql", "/available-book.sql"})
+    @Sql({"/book-and-user.sql", "/borrowed-book.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void givenBookIsReserved_thenBorrowIt_thenBookIsBorrowed() {
         //given
@@ -29,11 +29,6 @@ public class GiveBackBookComponentTest extends BaseComponentTest {
                 "SELECT id FROM user WHERE email = ?",
                 Long.class,
                 UserTestData.johnDoeEmail());
-
-        jdbcTemplate.update(
-                "INSERT INTO public.borrowed (book_id, user_id) VALUES (?, ?)",
-                homoDeusBookId,
-                activeUserId);
 
         GiveBackBookCommand giveBackBookCommand =
                 GiveBackBookCommand.builder()

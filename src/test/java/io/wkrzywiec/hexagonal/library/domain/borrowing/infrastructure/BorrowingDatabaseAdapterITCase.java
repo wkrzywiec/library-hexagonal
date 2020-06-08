@@ -113,16 +113,11 @@ public class BorrowingDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Get reserved book by its id")
-    @Sql({"/book-and-user.sql"})
+    @Sql({"/book-and-user.sql", "/reserved-book.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldFindReservedBook(){
         //given
         Long bookId = getHomoDeusBookIdFromDb();
-        Long johnDoeUserId = getJohnDoeUserIdFromDb();
-        jdbcTemplate.update(
-                "INSERT INTO public.reserved (book_id, user_id) VALUES (?, ?)",
-                bookId,
-                johnDoeUserId);
 
         //when
         Optional<ReservedBook> reservedBook = database.getReservedBook(bookId);
@@ -178,19 +173,11 @@ public class BorrowingDatabaseAdapterITCase {
 
     @Test
     @DisplayName("Find borrowed book by id")
-    @Sql({"/book-and-user.sql"})
+    @Sql({"/book-and-user.sql", "/borrowed-book.sql"})
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldFindBorrowedBook(){
         //given
         Long bookId = getHomoDeusBookIdFromDb();
-        Long johnDoeUserId = getJohnDoeUserIdFromDb();
-        jdbcTemplate.update(
-                "INSERT INTO public.borrowed (book_id, user_id, borrowed_date) VALUES (?, ?, ?)",
-                bookId,
-                johnDoeUserId,
-                Instant.now());
-
-        Long id = jdbcTemplate.queryForObject("SELECT book_id FROM borrowed WHERE book_id = ?", Long.class, bookId);
 
         //when
         Optional<BorrowedBook> borrowedBook = database.getBorrowedBook(bookId);
