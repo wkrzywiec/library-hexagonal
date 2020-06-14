@@ -110,11 +110,11 @@ public class BorrowingDatabaseAdapter implements BorrowingDatabase {
     }
 
     @Override
-    public List<OverdueReservation> findReservationsAfter(DueDate dueDate) {
+    public List<OverdueReservation> findReservationsForMoreThan(Long days) {
         List<OverdueReservationEntity> entities = jdbcTemplate.query(
-                "SELECT id AS reservationId, book_id AS bookIdentification FROM reserved WHERE reserved_date > ?",
+                "SELECT id AS reservationId, book_id AS bookIdentification FROM reserved WHERE DATEADD(day, ?, reserved_date) > NOW()",
                 new BeanPropertyRowMapper<OverdueReservationEntity>(OverdueReservationEntity.class),
-                Timestamp.from(dueDate.asInstant()));
+               days);
         return entities.stream()
                 .map(entity -> new OverdueReservation(entity.getReservationId(), entity.getBookIdentification()))
                 .collect(Collectors.toList());

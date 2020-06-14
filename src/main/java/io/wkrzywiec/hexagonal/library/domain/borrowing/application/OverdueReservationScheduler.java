@@ -11,7 +11,7 @@ public class OverdueReservationScheduler {
     @Qualifier("CancelOverdueReservations")
     private final CancelOverdueReservations overdueReservations;
 
-    @Scheduled(fixedRate = 10 * 1000)
+    @Scheduled(fixedRate = 60 * 1000)
     public void checkOverdueReservations(){
         overdueReservations.cancelOverdueReservations();
     }
