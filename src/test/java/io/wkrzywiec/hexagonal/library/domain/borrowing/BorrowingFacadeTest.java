@@ -143,7 +143,7 @@ public class BorrowingFacadeTest {
     public void givenBookIsReserved_when3daysPass_thenBookIsAvailable(){
         //given
         ReservedBook reservedBook = ReservationTestData.anyReservedBook(100L, 100L);
-        changeReservationTimeFor(reservedBook, 4L);
+        changeReservationTimeFor(reservedBook, Instant.now().minus(4, ChronoUnit.DAYS));
         database.reservedBooks.put(100L, reservedBook);
 
         //when
@@ -158,7 +158,7 @@ public class BorrowingFacadeTest {
     public void givenBookIsReserved_when2daysPass_thenBookIsStillReserved(){
         //given
         ReservedBook reservedBook = ReservationTestData.anyReservedBook(100L, 100L);
-        changeReservationTimeFor(reservedBook, 2L);
+        changeReservationTimeFor(reservedBook, Instant.now().minus(2, ChronoUnit.DAYS));
         database.reservedBooks.put(100L, reservedBook);
 
         //when
@@ -166,14 +166,6 @@ public class BorrowingFacadeTest {
 
         //then
         assertEquals(1, database.reservedBooks.size());
-    }
-
-    private void changeReservationTimeFor(ReservedBook reservedBook, Long daysFromNow) {
-        try {
-            FieldUtils.writeField(reservedBook, "reservedDate", Instant.now().plus(daysFromNow, ChronoUnit.DAYS), true);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -212,5 +204,13 @@ public class BorrowingFacadeTest {
         assertEquals(0, database.borrowedBooks.size());
         assertEquals(1, database.availableBooks.size());
         assertEquals(0, database.activeUsers.get(activeUser.getIdAsLong()).getBorrowedBookList().size());
+    }
+
+    private void changeReservationTimeFor(ReservedBook reservedBook, Instant reservationDate) {
+        try {
+            FieldUtils.writeField(reservedBook, "reservedDate", reservationDate, true);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

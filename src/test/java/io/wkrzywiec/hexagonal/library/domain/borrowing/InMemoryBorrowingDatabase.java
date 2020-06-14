@@ -10,6 +10,8 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservationId;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.ReservedBook;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingDatabase;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -63,11 +65,11 @@ public class InMemoryBorrowingDatabase implements BorrowingDatabase {
     }
 
     @Override
-    public List<OverdueReservation> findReservationsAfter(DueDate dueDate) {
+    public List<OverdueReservation> findReservationsForMoreThan(Long days) {
         return reservedBooks.values().stream()
                 .filter(reservedBook ->
-                        reservedBook.getReservedDateAsInstant()
-                                .isAfter(dueDate.asInstant()))
+                                Instant.now().isAfter(
+                                        reservedBook.getReservedDateAsInstant().plus(days, ChronoUnit.DAYS)))
                 .map(reservedBook ->
                         new OverdueReservation(
                             1L,

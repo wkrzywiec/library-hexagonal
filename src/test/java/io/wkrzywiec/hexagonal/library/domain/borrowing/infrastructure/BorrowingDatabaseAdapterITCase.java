@@ -147,7 +147,6 @@ public class BorrowingDatabaseAdapterITCase {
     @Sql(scripts = "/clean-database.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldFindOverdueReservations(){
         //given
-        DueDate thirdDayAfterReservation = new DueDate(Instant.now().plus(3, ChronoUnit.DAYS));
         Long overdueBookId = databaseHelper.getHomoDeusBookId();
         Long johnDoeUserId = databaseHelper.getJohnDoeUserId();
         jdbcTemplate.update(
@@ -157,7 +156,7 @@ public class BorrowingDatabaseAdapterITCase {
                 Instant.now().plus(4, ChronoUnit.DAYS));
 
         //when
-        OverdueReservation overdueReservation = database.findReservationsAfter(thirdDayAfterReservation).get(0);
+        OverdueReservation overdueReservation = database.findReservationsForMoreThan(3L).get(0);
 
         //then
         assertEquals(overdueBookId, overdueReservation.getBookIdentificationAsLong());

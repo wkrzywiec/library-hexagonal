@@ -6,7 +6,6 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservatio
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BookReservedEvent;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.BorrowedBook;
-import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.DueDate;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.GiveBackBookCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.MakeBookAvailableCommand;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.OverdueReservation;
@@ -24,8 +23,6 @@ import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.incoming.Reser
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingDatabase;
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.ports.outgoing.BorrowingEventPublisher;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOverdueReservations, BorrowBook, GiveBackBook {
@@ -61,10 +58,9 @@ public class BorrowingFacade implements MakeBookAvailable, ReserveBook, CancelOv
 
     @Override
     public void cancelOverdueReservations() {
-        DueDate dueDate = new DueDate(Instant.now().plus(3L, ChronoUnit.DAYS));
-        List<OverdueReservation> overdueReservationList = database.findReservationsAfter(dueDate);
+        List<OverdueReservation> overdueReservationList = database.findReservationsForMoreThan(3L);
         overdueReservationList.forEach(
-                overdue -> database.save(new AvailableBook(overdue.getBookIdentificationAsLong())));
+                overdueBook -> database.save(new AvailableBook(overdueBook.getBookIdentificationAsLong())));
     }
 
     @Override
