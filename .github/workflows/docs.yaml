@@ -1,9 +1,9 @@
 name: Generate documentation
 
-on:
-  push:
-    paths:
-      - 'docs/**'
+#on:
+#  push:
+#    paths:
+#      - 'docs/**'
 
 jobs:
   github-pages:
