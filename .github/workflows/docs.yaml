@@ -5,6 +5,8 @@ name: Generate documentation
 #    paths:
 #      - 'docs/**'
 
+on: push
+
 jobs:
   github-pages:
     runs-on: ubuntu-16.04
