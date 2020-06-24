@@ -9,9 +9,22 @@ on: push
 
 jobs:
   github-pages:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: helaili/jekyll-action@2.0.1
-        env:
-          JEKYLL_PAT: ${{ secrets.JEKYLL_PAT }}
+        with:
+          path: project
+
+      - name: Git clone docs layout
+        uses: actions/checkout@v2
+        with:
+          repository: gustavoquinalha/jekyll-help-center-theme
+          path: public
+
+      - name: Publish docs page
+        uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./public
+            user_name: 'github-actions[bot]'
+            user_email: 'github-actions[bot]@users.noreply.github.com'
