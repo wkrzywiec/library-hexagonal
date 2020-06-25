@@ -18,7 +18,8 @@ jobs:
       - name: Git clone docs layout
         uses: actions/checkout@v2
         with:
-          repository: gustavoquinalha/jekyll-help-center-theme
+          repository: LeakyAbstractions/pretty-docs
+          ref: 'gh-pages'
           path: public
 
       - name: Publish docs page
