@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-        with:
-          path: project
 
       - name: Install NPM dependencies
         run: npm install
+        working-directory: ./docs
 
       - name: Build docs site
         run: npm run build
+        working-directory: ./docs
 
       - name: Publish docs page
         uses: peaceiris/actions-gh-pages@v3
