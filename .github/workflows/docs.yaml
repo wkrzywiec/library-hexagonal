@@ -15,18 +15,16 @@ jobs:
         with:
           path: project
 
-      - name: Git clone docs layout
-        uses: actions/checkout@v2
-        with:
-          repository: LeakyAbstractions/pretty-docs
-          ref: 'gh-pages'
-          path: public
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build docs site
+        run: npm run build
 
       - name: Publish docs page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          enable_jekyll: true
+          publish_dir: ./docs/dist
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'

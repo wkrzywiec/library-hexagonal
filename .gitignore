@@ -6,8 +6,17 @@ mvnw.cmd
 !**/src/main/**
 !**/src/test/**
 
+/docs/node_modules/**
+*.log
+/docs/.cache
+.DS_Store
+/docs/src/.temp
+/docs/dist
+!.env.example
+/docs/.env
+/docs/.env.*
+
 ### STS ###
-.apt_generated
 .classpath
 .factorypath
 .project

@@ -1,1 +1,0 @@
-# library-hexagonal Documentation
