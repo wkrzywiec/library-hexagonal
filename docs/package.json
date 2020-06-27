@@ -1,26 +1,22 @@
 {
-  "name": "docs",
-  "private": true,
+  "name": "@gustavoquinalha/jekyll-help-center-theme",
+  "version": "1.0.0",
+  "description": "Simple and responsive Jekyll theme for help center.",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
+  },
   "scripts": {
-    "build": "gridsome build",
-    "develop": "gridsome develop",
-    "explore": "gridsome explore"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp"
   },
-  "dependencies": {
-    "gridsome": "^0.7.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gustavoquinalha/jekyll-help-center-theme.git"
   },
-  "devDependencies": {
-    "@gridsome/plugin-google-analytics": "^0.1.0",
-    "@gridsome/plugin-sitemap": "^0.2.3",
-    "@gridsome/remark-prismjs": "^0.3.0",
-    "@gridsome/source-filesystem": "^0.6.2",
-    "@gridsome/transformer-remark": "^0.5.0",
-    "fuse.js": "^3.4.6",
-    "gridsome-plugin-tailwindcss": "^2.2.36",
-    "node-sass": "^4.13.1",
-    "prism-themes": "^1.3.0",
-    "sass-loader": "^8.0.2",
-    "tailwindcss": "^1.2.0",
-    "vue-feather-icons": "^5.0.0"
-  }
+  "author": "gustavoquinalha <gusquinalha@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gustavoquinalha/jekyll-help-center-theme/issues"
+  },
+  "homepage": "https://github.com/gustavoquinalha/jekyll-help-center-theme#readme"
 }

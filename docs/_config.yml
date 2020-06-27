@@ -1,0 +1,28 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: "Help Center"
+email: gusquinalha@gmail.com
+description: "Simple and flexible Jekyll theme for help center."
+baseurl: "/library-hexagonal"
+url: "https://wkrzywiec.github.io"
+twitter_username: "gustavoquinalha"
+github_username:  "gustavoquinalha"
+color_theme:  "#0081ff"
+color_text:  "#fff"
+language:  "en"
+
+# Build settings
+markdown: kramdown
+permalink: /:title/
+gems: [jekyll-paginate]
+paginate: 5
+
+# Plugins
+plugins_dir:
+  - jekyll-admin
