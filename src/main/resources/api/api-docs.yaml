@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /:
+    get:
+      tags:
+      - library-hexagonal-controller
+      operationId: getAppRoot
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /books/{id}/status:
+    patch:
+      tags:
+      - borrowing-domain-controller
+      operationId: borrowBook
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeBookStatusRequest'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /books:
+    post:
+      tags:
+      - book-command-controller
+      operationId: addNewBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddNewBookCommand'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /users:
+    post:
+      tags:
+      - user-command-controller
+      operationId: addNewUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserCommand'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /google/books:
+    get:
+      tags:
+      - google-books-search-controller
+      operationId: searchForBooks
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    ChangeBookStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - AVAILABLE
+          - RESERVED
+          - BORROWED
+        userId:
+          type: integer
+          format: int64
+    AddNewBookCommand:
+      type: object
+      properties:
+        googleBookId:
+          type: string
+    AddUserCommand:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
