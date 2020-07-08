@@ -15,13 +15,13 @@ jobs:
         with:
           path: ./repo
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: .
-
       - run: cp -r ./repo/docs/page .
 
       - run: rm -rf ./repo
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: .
 
       - name: Publish docs page
         uses: helaili/jekyll-action@2.0.1
