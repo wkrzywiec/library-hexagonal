@@ -15,8 +15,6 @@ jobs:
         with:
           path: ./docs/page
 
-      - run: tree -a
-
       - uses: actions/upload-artifact@v2
         with:
           path: .
