@@ -19,7 +19,7 @@ jobs:
         with:
           path: .
 
-      - run: cp repo/docs/page .
+      - run: cp -r ./repo/docs/page .
 
       - run: rmdir ./repo
 
