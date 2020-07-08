@@ -12,12 +12,16 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: ./repo
 
       - uses: actions/upload-artifact@v2
         with:
           path: .
 
-      - run: cd docs/page
+      - run: cp ./repo/docs/page .
+
+      - run: rmdir ./repo
 
       - name: Publish docs page
         uses: helaili/jekyll-action@2.0.1
