@@ -15,7 +15,7 @@ jobs:
         with:
           path: ./repo
 
-      - run: cp -r ./repo/docs/page .
+      - run: cp -r ./repo/docs/page/* .
 
       - run: rm -rf ./repo
 
