@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: ./docs/page
+          path: docs/page
 
       - name: Publish docs page
         uses: helaili/jekyll-action@2.0.1
