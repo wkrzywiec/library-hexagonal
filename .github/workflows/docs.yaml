@@ -26,6 +26,7 @@ jobs:
 
       - name: Generate OpenApi documentation
         run: openapi-generator generate -i api-docs.yaml -g html /api
+        continue-on-error: true
 
       - uses: actions/upload-artifact@v2
         with:
