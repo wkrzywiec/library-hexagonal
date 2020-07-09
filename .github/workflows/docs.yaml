@@ -22,7 +22,7 @@ jobs:
           rm -rf ./repo
 
       - name: Dependencies for OpenApi
-        run: npm install @openapitools/openapi-generator-cli -g
+        run: npm ci @openapitools/openapi-generator-cli -g
 
       - name: Generate OpenApi documentation
         run: openapi-generator generate -i api-docs.yaml -g html /api
