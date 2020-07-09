@@ -15,9 +15,17 @@ jobs:
         with:
           path: ./repo
 
-      - run: cp -r ./repo/docs/page/* .
+      - name: Prepare workdir
+        run: |
+          cp -r ./repo/docs/page/* .
+          cp ./repo/docs/api-docs.yaml .
+          rm -rf ./repo
 
-      - run: rm -rf ./repo
+      - name: Dependencies for OpenApi
+        run: npm install @openapitools/openapi-generator-cli -g
+
+      - name: Generate OpenApi documentation
+        run: openapi-generator generate -i api-docs.yaml -g html /api
 
       - uses: actions/upload-artifact@v2
         with:
