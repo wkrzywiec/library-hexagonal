@@ -25,8 +25,8 @@ jobs:
         run: npm install @openapitools/openapi-generator-cli
 
       - name: Generate OpenApi documentation
-        run: openapi-generator generate -i api-docs.yaml -g html /api
-        continue-on-error: true
+        run: $(npm bin)/openapi-generator generate -i api-docs.yaml -g html /api
+        # continue-on-error: true
 
       - uses: actions/upload-artifact@v2
         with:
