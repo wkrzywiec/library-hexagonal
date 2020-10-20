@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BorrowingFacadeTest {
+class BorrowingFacadeTest {
 
     private BorrowingFacade facade;
     private InMemoryBorrowingDatabase database;
@@ -226,17 +226,17 @@ public class BorrowingFacadeTest {
 
 class InMemoryBorrowingDatabase implements BorrowingDatabase {
 
-    ConcurrentHashMap<Long, ActiveUser> activeUsers = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Long, AvailableBook> availableBooks = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Long, ReservedBook> reservedBooks = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Long, BorrowedBook> borrowedBooks = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, ActiveUser> activeUsers = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, AvailableBook> availableBooks = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, ReservedBook> reservedBooks = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, BorrowedBook> borrowedBooks = new ConcurrentHashMap<>();
 
-    @Override
-    public void save(AvailableBook availableBook) {
-        availableBooks.put(availableBook.getIdAsLong(), availableBook);
-        reservedBooks.remove(availableBook.getIdAsLong());
-        borrowedBooks.remove(availableBook.getIdAsLong());
-    }
+        @Override
+        public void save(AvailableBook availableBook) {
+            availableBooks.put(availableBook.getIdAsLong(), availableBook);
+            reservedBooks.remove(availableBook.getIdAsLong());
+            borrowedBooks.remove(availableBook.getIdAsLong());
+        }
 
     @Override
     public Optional<AvailableBook> getAvailableBook(Long bookId) {

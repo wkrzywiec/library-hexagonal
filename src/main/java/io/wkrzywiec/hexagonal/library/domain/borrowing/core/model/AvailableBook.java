@@ -1,8 +1,10 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing.core.model;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode
+@ToString
 public class AvailableBook implements Book {
 
     private final Long id;
