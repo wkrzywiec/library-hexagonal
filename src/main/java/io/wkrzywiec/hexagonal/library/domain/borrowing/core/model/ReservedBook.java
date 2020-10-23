@@ -1,6 +1,7 @@
 package io.wkrzywiec.hexagonal.library.domain.borrowing.core.model;
 
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 

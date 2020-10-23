@@ -2,10 +2,14 @@ package io.wkrzywiec.hexagonal.library.domain.borrowing.core.model;
 
 import io.wkrzywiec.hexagonal.library.domain.borrowing.core.model.exception.TooManyBooksAssignedToUserException;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @EqualsAndHashCode
+@ToString
 public class ActiveUser {
 
     private final Long id;
